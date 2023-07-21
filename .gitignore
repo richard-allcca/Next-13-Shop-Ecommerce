@@ -38,3 +38,9 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# Docker
+mongo/
+
+# variables de entorno
+.env

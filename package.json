@@ -13,6 +13,7 @@
     "@mui/icons-material": "^5.14.0",
     "@mui/material": "^5.14.0",
     "@mui/x-data-grid": "^6.10.0",
+    "mongoose": "^7.4.0",
     "next": "13.4.9",
     "react": "18.2.0",
     "react-dom": "18.2.0",
