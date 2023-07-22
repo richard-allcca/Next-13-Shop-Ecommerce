@@ -1,6 +1,22 @@
 import { AppBar, Toolbar, Link as MuiLink, Typography, Box, Button, IconButton, Badge } from '@mui/material';
 import Link from 'next/link';
 import { SearchOutlined, ShoppingCartOutlined } from '@mui/icons-material';
+import { ActiveLink } from './ActiveLink';
+
+const menuItems = [
+  {
+    label: 'Hombres',
+    path: '/category/men'
+  },
+  {
+    label: 'Mujeres',
+    path: '/category/women'
+  },
+  {
+    label: 'Niños',
+    path: '/category/kid'
+  }
+];
 
 export const Navbar = () => {
   return (
@@ -13,31 +29,15 @@ export const Navbar = () => {
           </MuiLink>
         </Link>
 
-        {/*  TODO - flex */}
-
         <Box sx={{ display: { xs: 'none', md: 'block' } }} >
-
-          <Link href="/category/men" >
-            <MuiLink underline="always" component={'span'} >
-              <Button>Hombres</Button>
-            </MuiLink>
-          </Link>
-
-          <Link href="/category/women" >
-            <MuiLink underline="always" component={'span'} >
-              <Button>Mujeres</Button>
-            </MuiLink>
-          </Link>
-
-          <Link href="/category/kid" >
-            <MuiLink underline="always" component={'span'} >
-              <Button>Niños</Button>
-            </MuiLink>
-          </Link>
-
+          {
+            menuItems.map((item, index) => {
+              return (
+                <ActiveLink key={index} path={item.path} label={`${item.label}`} />
+              );
+            })
+          }
         </Box>
-
-        {/* TODO - box */}
 
         <Box>
           <IconButton>

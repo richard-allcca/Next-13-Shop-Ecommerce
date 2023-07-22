@@ -2,34 +2,36 @@
 import { FC } from 'react';
 import { Slide } from 'react-slideshow-image';
 
-import 'react-slideshow-image/dist/styles.css'
-import Style from './ProductSlidesshow.module.css'
+import 'react-slideshow-image/dist/styles.css';
+import Style from './ProductSlidesshow.module.css';
 
 interface Props {
   images: string[];
 }
 
-export const ProductSlideshow: FC<Props> = ({images}) => {
+export const ProductSlideshow: FC<Props> = ({ images }) => {
   return (
     <Slide
-      easing='ease'
+      easing="ease"
       duration={700}
       indicators
     >
       {
         images.map((image,index) => {
-          const url = `/products/${image}`
+          const url = `/products/${image}`;
           return (
             <div className={Style.eachSlide } key={index}>
               <div style={{
                 backgroundImage: `url(${url})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
               }} >
 
               </div>
             </div>
-          )
+          );
         })
       }
     </Slide>
-  )
-}
+  );
+};
