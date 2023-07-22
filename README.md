@@ -8,12 +8,6 @@ npm run dev
 yarn dev
 ```
 
-# Next.js - Open Jira app
-
-Clon de Jira
-
-Pendiente eliminación de entradas
-
 ## Configuararciones iniciales
 
 - Reconstruir los modulos con `npm i`
