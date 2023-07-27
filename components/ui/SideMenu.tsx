@@ -7,9 +7,6 @@ import {
   InputAdornment,
   List,
   ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
   ListSubheader,
 } from '@mui/material';
 import {
@@ -24,10 +21,37 @@ import {
   SearchOutlined,
   VpnKeyOutlined,
 } from '@mui/icons-material';
+import { useContext } from 'react';
+import { UiContext } from '../../context';
+import { ItemMenu } from './ItemMenu';
+
+const topListMenu = [
+  { text: 'Perfil', icon: <AccountCircleOutlined /> },
+  { text: 'Mis Ordenes', icon: <ConfirmationNumberOutlined /> }
+];
+
+const listCategoriesMenu = [
+  { text: 'Hombres', icon: <MaleOutlined />, path: '/category/men' },
+  { text: 'Mujeres', icon: <FemaleOutlined />, path: '/category/women' },
+  { text: 'Niños', icon: <EscalatorWarningOutlined />, path: '/category/kid' },
+];
+
+const listAdminPanel = [
+  { text: 'Productos', icon: <CategoryOutlined /> },
+  { text: 'Ordenes', icon: <ConfirmationNumberOutlined /> },
+  { text: 'Usuarios', icon: <AdminPanelSettings /> },
+];
+
+const listBoottomMenu = [
+  { text: 'Ingresar', icon: <VpnKeyOutlined /> },
+  { text: 'Salir', icon: <LoginOutlined /> },
+];
 
 export const SideMenu = () => {
+  const { isMenuOpen, toggleSideMenu } = useContext(UiContext);
+
   return (
-    <Drawer open={false} anchor="right" sx={{ backdropFilter: 'blur(4px)', transition: 'all 0.5s ease-out' }}>
+    <Drawer open={isMenuOpen} anchor="right" sx={{ backdropFilter: 'blur(4px)', transition: 'all 0.5s ease-out' }}>
       <Box sx={{ width: 250, paddingTop: 5 }}>
         <List>
           <ListItem>
@@ -44,84 +68,20 @@ export const SideMenu = () => {
             />
           </ListItem>
 
-          <ListItemButton>
-            <ListItemIcon>
-              <AccountCircleOutlined />
-            </ListItemIcon>
-            <ListItemText primary={'Perfil'} />
-          </ListItemButton>
+          <ItemMenu lista={topListMenu} />
 
-          <ListItemButton >
-            <ListItemIcon>
-              <ConfirmationNumberOutlined />
-            </ListItemIcon>
-            <ListItemText primary={'Mis Ordenes'} />
-          </ListItemButton>
+          <ItemMenu lista={listCategoriesMenu} />
 
-          {/* Elements of Nav in tablet */}
+          <ItemMenu lista={listBoottomMenu} />
 
-          <ListItemButton sx={{ display: { xs: '', sm: 'none' } }}>
-            <ListItemIcon>
-              <MaleOutlined />
-            </ListItemIcon>
-            <ListItemText primary={'Hombres'} />
-          </ListItemButton>
-
-          <ListItemButton sx={{ display: { xs: '', sm: 'none' } }}>
-            <ListItemIcon>
-              <FemaleOutlined />
-            </ListItemIcon>
-            <ListItemText primary={'Mujeres'} />
-          </ListItemButton>
-
-          <ListItemButton sx={{ display: { xs: '', sm: 'none' } }}>
-            <ListItemIcon>
-              <EscalatorWarningOutlined />
-            </ListItemIcon>
-            <ListItemText primary={'Niños'} />
-          </ListItemButton>
-
-          {/* ----------------------------- */}
-
-          <ListItemButton >
-            <ListItemIcon>
-              <VpnKeyOutlined />
-            </ListItemIcon>
-            <ListItemText primary={'Ingresar'} />
-          </ListItemButton>
-
-          <ListItemButton >
-            <ListItemIcon>
-              <LoginOutlined />
-            </ListItemIcon>
-            <ListItemText primary={'Salir'} />
-          </ListItemButton>
-
-          {/* Admin */}
           <Divider />
+
           <ListSubheader>Admin Panel</ListSubheader>
+          <ItemMenu lista={listAdminPanel}/>
 
-          <ListItemButton >
-            <ListItemIcon>
-              <CategoryOutlined />
-            </ListItemIcon>
-            <ListItemText primary={'Productos'} />
-          </ListItemButton>
-          <ListItemButton >
-            <ListItemIcon>
-              <ConfirmationNumberOutlined />
-            </ListItemIcon>
-            <ListItemText primary={'Ordenes'} />
-          </ListItemButton>
-
-          <ListItemButton >
-            <ListItemIcon>
-              <AdminPanelSettings />
-            </ListItemIcon>
-            <ListItemText primary={'Usuarios'} />
-          </ListItemButton>
         </List>
       </Box>
     </Drawer>
   );
 };
+

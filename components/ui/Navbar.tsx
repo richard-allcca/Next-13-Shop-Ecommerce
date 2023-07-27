@@ -2,6 +2,8 @@ import { AppBar, Toolbar, Link as MuiLink, Typography, Box, Button, IconButton, 
 import Link from 'next/link';
 import { SearchOutlined, ShoppingCartOutlined } from '@mui/icons-material';
 import { ActiveLink } from './ActiveLink';
+import { useContext } from 'react';
+import { UiContext } from '../../context';
 
 const menuItems = [
   {
@@ -19,6 +21,9 @@ const menuItems = [
 ];
 
 export const Navbar = () => {
+
+  const { toggleSideMenu } = useContext(UiContext);
+
   return (
     <AppBar>
       <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }} >
@@ -54,7 +59,7 @@ export const Navbar = () => {
             </MuiLink>
           </Link>
 
-          <Button>
+          <Button onClick={toggleSideMenu} >
             <Typography>Menu</Typography>
           </Button>
         </Box>
