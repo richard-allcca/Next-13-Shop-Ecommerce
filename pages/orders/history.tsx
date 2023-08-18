@@ -13,12 +13,12 @@ const columns: GridColDef[] = [
     description: 'Muestra información si está pagada la orden o no',
     width: 200,
     renderCell: (params: GridRenderCellParams) => {
-      return (
-        params.row.paid
-          ? <Chip color='success' label='Pagada' variant='outlined' />
-          : <Chip color='error' label='No Pagada' variant='outlined' />
+      return params.row.paid ? (
+        <Chip color="success" label="Pagada" variant="outlined" />
+      ) : (
+        <Chip color="error" label="No Pagada" variant="outlined" />
       );
-    }
+    },
   },
   {
     field: 'orden',
@@ -27,13 +27,11 @@ const columns: GridColDef[] = [
     sortable: false,
     renderCell: (params: GridRenderCellParams) => {
       return (
-        <Link href={`/orders/${params.row.id}`} >
-          <MuiLink component='span' >
-            Ver orden
-          </MuiLink>
+        <Link href={`/orders/${params.row.id}`}>
+          <MuiLink component="span">Ver orden</MuiLink>
         </Link>
       );
-    }
+    },
   },
 ];
 
@@ -48,17 +46,19 @@ const rows = [
 
 const history = () => {
   return (
-    <ShopLayout title='Historial de ordenes' pageDescription='Historial de ordenes del cliente' >
-      <Typography variant='h1' component='h1' >Historial de ordenes</Typography>
+    <ShopLayout title="Historial de ordenes" pageDescription="Historial de ordenes del cliente">
+      <Typography variant="h1" component="h1">
+        Historial de ordenes
+      </Typography>
 
-      <Grid container >
-        <Grid item xs={12} sx={{ height: 650, width: '100%' }} >
+      <Grid container>
+        <Grid item xs={12} sx={{ height: 650, width: '100%' }}>
           <DataGrid
             rows={rows}
             columns={columns}
             initialState={{
               pagination: {
-                paginationModel: { pageSize: 5 }
+                paginationModel: { pageSize: 5 },
               },
             }}
             pageSizeOptions={[5, 10, 25]}

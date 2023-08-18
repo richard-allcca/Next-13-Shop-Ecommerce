@@ -29,7 +29,7 @@ export const CartList: FC<Props> = ({ editable }) => {
                   <CardActionArea>
                     <CardMedia
                       image={`/products/${product.images[0]}`}
-                      component='img'
+                      component="img"
                       sx={{ borderRadius: '5px' }}
                     />
                   </CardActionArea>
@@ -38,24 +38,24 @@ export const CartList: FC<Props> = ({ editable }) => {
             </Grid>
 
             <Grid item xs={7} >
-              <Box display='flex' flexDirection='column' >
-                <Typography variant='body1' >{product.title}</Typography>
-                <Typography variant='body1' >Talla: <strong>M</strong></Typography>
+              <Box display="flex" flexDirection="column" >
+                <Typography variant="body1" >{product.title}</Typography>
+                <Typography variant="body1" >Talla: <strong>M</strong></Typography>
 
                 {
                   editable ? (
                     <ItemCounter />
-                  ) : <Typography variant='h5' >3 items</Typography>
+                  ) : <Typography variant="h5" >3 items</Typography>
                 }
 
               </Box>
             </Grid>
 
             <Grid item xs={2} >
-              <Typography variant='subtitle1' >${product.price}</Typography>
+              <Typography variant="subtitle1" >${product.price}</Typography>
               {
                 editable && (
-                  <Button variant='text' color='secondary' >
+                  <Button variant="text" color="secondary" >
                     Remover
                   </Button>
                 )

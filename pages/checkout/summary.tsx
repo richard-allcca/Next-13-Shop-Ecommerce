@@ -6,8 +6,8 @@ import Link from 'next/link';
 
 const summary = () => {
   return (
-    <ShopLayout title='Resumen de la orden' pageDescription='Resumen de la orden' >
-      <Typography variant='h1' component='h1' >
+    <ShopLayout title="Resumen de la orden" pageDescription="Resumen de la orden" >
+      <Typography variant="h1" component="h1" >
         Resumen de la orden
       </Typography>
 
@@ -18,18 +18,18 @@ const summary = () => {
         </Grid>
 
         <Grid item xs={12} sm={5} >
-          <Card className='summary-card' >
+          <Card className="summary-card" >
             <CardContent>
 
-              <Typography variant='h2' >Resumen (3 productos)</Typography>
+              <Typography variant="h2" >Resumen (3 productos)</Typography>
 
               <Divider sx={{ my: 1 }} />
 
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }} >
-                <Typography variant='subtitle1' >Direccion de entrega</Typography>
+                <Typography variant="subtitle1" >Direccion de entrega</Typography>
 
-                <Link href='/checkout/adress' >
-                  <MuiLink component='span' underline='always' >
+                <Link href="/checkout/adress" >
+                  <MuiLink component="span" underline="always" >
                     Editar
                   </MuiLink>
                 </Link>
@@ -44,8 +44,8 @@ const summary = () => {
               <Divider sx={{ my: 1 }} />
 
               <Box sx={{ display: 'flex', justifyContent: 'end' }} >
-                <Link href='/cart' >
-                  <MuiLink component='span' underline='always' >
+                <Link href="/cart" >
+                  <MuiLink component="span" underline="always" >
                     Editar
                   </MuiLink>
                 </Link>
@@ -54,7 +54,7 @@ const summary = () => {
               <OrderSummary />
 
               <Box sx={{ mt: 3 }} >
-                <Button color='secondary' className='circular-btn' >
+                <Button color="secondary" className="circular-btn" >
                   Checkout
                 </Button>
               </Box>

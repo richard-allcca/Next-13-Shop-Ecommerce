@@ -1,6 +1,6 @@
-import { FC } from "react";
-import { ISize } from "../../interface";
-import { Box, Button } from "@mui/material";
+import { FC } from 'react';
+import { ISize } from '../../interface';
+import { Box, Button } from '@mui/material';
 
 interface Props {
   selectexSize?: ISize;
