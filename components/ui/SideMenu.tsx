@@ -1,14 +1,4 @@
-import {
-  Box,
-  Divider,
-  Drawer,
-  IconButton,
-  Input,
-  InputAdornment,
-  List,
-  ListItem,
-  ListSubheader,
-} from '@mui/material';
+import { Box, Divider, Drawer, IconButton, Input, InputAdornment, List, ListItem, ListSubheader } from '@mui/material';
 import {
   AccountCircleOutlined,
   AdminPanelSettings,
@@ -21,13 +11,14 @@ import {
   SearchOutlined,
   VpnKeyOutlined,
 } from '@mui/icons-material';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { UiContext } from '../../context';
 import { ItemMenu } from './ItemMenu';
+import { useRouter } from 'next/router';
 
 const topListMenu = [
   { text: 'Perfil', icon: <AccountCircleOutlined /> },
-  { text: 'Mis Ordenes', icon: <ConfirmationNumberOutlined /> }
+  { text: 'Mis Ordenes', icon: <ConfirmationNumberOutlined /> },
 ];
 
 const listCategoriesMenu = [
@@ -50,17 +41,39 @@ const listBoottomMenu = [
 export const SideMenu = () => {
   const { isMenuOpen, toggleSideMenu } = useContext(UiContext);
 
+  const router = useRouter();
+
+  const [search, setSearch] = useState('');
+
+  const onSearchTerm = () =>  {
+    if(search.trim().length === 0) return null;
+    toggleSideMenu();
+    router.push(`/search/${search}`);
+  };
+
   return (
-    <Drawer open={isMenuOpen} anchor="right" sx={{ backdropFilter: 'blur(4px)', transition: 'all 0.5s ease-out' }}>
+    <Drawer
+      open={isMenuOpen}
+      onClose={toggleSideMenu}
+      // onKeyDown={ (e) => e.key === 'Enter' && onSearchTerm()}
+      anchor="right"
+      sx={{ backdropFilter: 'blur(4px)', transition: 'all 0.5s ease-out' }}
+    >
       <Box sx={{ width: 250, paddingTop: 5 }}>
         <List>
           <ListItem>
             <Input
+              autoFocus
+              onChange={(e)=> setSearch(e.target.value)}
+              onKeyDown={ (e) => e.key === 'Enter' && onSearchTerm()}
+              value={search}
               type="text"
               placeholder="Buscar..."
               endAdornment={
                 <InputAdornment position="end">
-                  <IconButton aria-label="toggle password visibility">
+                  <IconButton
+                    onClick={onSearchTerm}
+                  >
                     <SearchOutlined />
                   </IconButton>
                 </InputAdornment>
@@ -77,11 +90,9 @@ export const SideMenu = () => {
           <Divider />
 
           <ListSubheader>Admin Panel</ListSubheader>
-          <ItemMenu lista={listAdminPanel}/>
-
+          <ItemMenu lista={listAdminPanel} />
         </List>
       </Box>
     </Drawer>
   );
 };
-

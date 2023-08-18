@@ -28,7 +28,7 @@ export const ProductCard: FC<Props> = ({ product }) => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <Card>
-        <Link href="/product/slug" prefetch={false} >
+        <Link href={`/product/${product.slug}`} prefetch={false} >
           <MuiLink underline="always" component={'span'} >
             <CardActionArea>
               <CardMedia

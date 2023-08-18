@@ -12,51 +12,59 @@ yarn dev
 
 - Reconstruir los modulos con `npm i`
 
-    Importante agregar `mongo/` al gitignore
+    ***Importante agregar `mongo/` al gitignore***
 
-- Para correr localmente necesita la DDBB, tener docker desktop corriendo y ejecutar:
+### DDBB en local
 
-        docker compose up -d
+- tener docker desktop corriendo y ejecutar
 
-- Para correr el proyecto - Se utilizo `yarn` o `npm`
+``` bash
+  docker compose up -d
+```
 
-      npm run dev
-      # or
-      yarn dev
+### Cadena de conexion con MongoDB local (contenedor)
 
-   Open [localhost](http://localhost:3000) with your browser to see the result.
+``` bash
+  mongodb://localhost:27017/entriesdb
+```
 
-- Cadena de conexion con MongoDB local
+### Llenar la DDDBB con datos de prueba usando
 
-      mongodb://localhost:27017/entriesdb
+- usa este comando solo una vez o elimina el file /page/api/seed
 
-- Llenar la DDDBB con datos de prueba usando:
+```bash
+  GET - localhost://localhost:3000/api/seed
+```
 
-      GET - localhost://localhost:3000/api/seed
+### Font global
 
-- LUEGO DE USAR EL COMANDO NO USES ESTE COMANDO O ELIMINA EL FILE /page/api/seed
+- use en el _document
 
-- CDN en el _document
-
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-      />
+``` html
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+    />
+```
 
 - Configuarar variables de entorno
 
 - MongoDB URL Local, para conexion con la base de datos.
 
-      mongodb://localhost:27017/entriesdb
+``` bash
+  mongodb://localhost:27017/entriesdb
+```
 
 ## Dependecias
 
-    yarn add @mui/material @emotion/react @emotion/styled
-    yarn add @mui/icons-material
-    yarn add uuid
-    yarn add notistack
-    yarn add date-fns
-    yarn add @mui/x-data-grid
+``` bash
+  yarn add @mui/material @emotion/react @emotion/styled
+  yarn add @mui/icons-material
+  yarn add uuid
+  yarn add notistack
+  yarn add date-fns
+  yarn add @mui/x-data-grid
+```
 
 ## Enlaces
 
