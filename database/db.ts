@@ -25,7 +25,6 @@ export const connect = async () => {
       return;
     }
 
-    console.log('nunca llega aqui');
     await mongoose.disconnect();
   }
 

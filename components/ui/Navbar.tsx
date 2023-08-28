@@ -14,7 +14,7 @@ import Link from 'next/link';
 import { ClearOutlined, SearchOutlined, ShoppingCartOutlined } from '@mui/icons-material';
 import { ActiveLink } from './ActiveLink';
 import { useContext, useState } from 'react';
-import { UiContext } from '../../context';
+import { CartContext, UiContext } from '../../context';
 import { useRouter } from 'next/router';
 
 const menuItems = [
@@ -35,6 +35,7 @@ const menuItems = [
 
 export const Navbar = () => {
   const { toggleSideMenu } = useContext(UiContext);
+  const { numberOfItem } = useContext(CartContext);
 
   const router = useRouter();
 
@@ -45,6 +46,8 @@ export const Navbar = () => {
     if (search.trim().length === 0) return null;
     router.push(`/search/${search}`);
   };
+
+  const countItem = numberOfItem > 9 ? '+9' : numberOfItem;
 
   return (
     <AppBar>
@@ -98,7 +101,7 @@ export const Navbar = () => {
           <Link href="/cart">
             <MuiLink underline="always" component={'span'}>
               <IconButton>
-                <Badge badgeContent={2} color="secondary">
+                <Badge badgeContent={countItem} color="secondary">
                   <ShoppingCartOutlined />
                 </Badge>
               </IconButton>

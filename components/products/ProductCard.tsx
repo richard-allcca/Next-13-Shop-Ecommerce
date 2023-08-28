@@ -1,5 +1,5 @@
 import React, { FC, useMemo, useState } from 'react';
-import { Link as MuiLink,Grid, Card, CardActionArea, CardMedia, Box, Typography } from '@mui/material';
+import { Link as MuiLink, Grid, Card, CardActionArea, CardMedia, Box, Typography, Chip, Button } from '@mui/material';
 import { IProduct } from '../../interface';
 import Link from 'next/link';
 
@@ -30,7 +30,16 @@ export const ProductCard: FC<Props> = ({ product }) => {
       <Card>
         <Link href={`/product/${product.slug}`} prefetch={false} >
           <MuiLink underline="always" component={'span'} >
+
             <CardActionArea>
+              {
+                product.inStock === 0 &&
+                <Chip
+                  color="primary"
+                  label="No hay disponibles"
+                  sx={{ position: 'absolute', zIndex: 99, top: '10px', left: '10px' }}
+                />
+              }
               <CardMedia
                 component="img"
                 image={productImage}
@@ -38,6 +47,7 @@ export const ProductCard: FC<Props> = ({ product }) => {
                 className="fadeIn"
                 onLoad={() => setIsImageLoaded(true)}
               />
+
             </CardActionArea>
           </MuiLink>
         </Link>

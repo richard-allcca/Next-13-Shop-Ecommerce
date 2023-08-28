@@ -64,6 +64,7 @@ yarn dev
   yarn add notistack
   yarn add date-fns
   yarn add @mui/x-data-grid
+  yarn add js-cookies
 ```
 
 ## Enlaces

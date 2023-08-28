@@ -24,7 +24,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
 const searchProducts = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 
   let { search = '' } = req.query;
-  console.log('search', search);
 
   if (search.length === 0) {
     return res.status(400).json({
