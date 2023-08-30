@@ -1,6 +1,6 @@
 import { NextApiResponse, NextApiRequest } from 'next';
 import { db, seedDatabase } from '../../database';
-import { Product } from '../../models';
+import { Product, User } from '../../models';
 
 type Data = {
   ok: boolean;
@@ -9,11 +9,8 @@ type Data = {
 
 // IMPORTANT - DO NOT USE THIS FILE - IT IS ONLY FOR DEVELOPMENT - CHARGE FIRST DATA IN DDBB
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
-) {
-  // Evita ejecutar este endopoint en producción y pugar la db
+export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
+
   if (process.env.NODE_ENV === 'production') {
     return res
       .status(401)
@@ -22,7 +19,10 @@ export default async function handler(
 
   db.connect();
 
-  await Product.deleteMany(); // REVIEW - esto elimina toda la base de datos
+  await User.deleteMany();
+  await User.insertMany(seedDatabase.initialData.users);
+
+  await Product.deleteMany();
   await Product.insertMany(seedDatabase.initialData.products);
 
   db.disconnect();

@@ -3,8 +3,6 @@
 First, run the development server:
 
 ```bash
-npm run dev
-# or
 yarn dev
 ```
 
@@ -65,6 +63,10 @@ yarn dev
   yarn add date-fns
   yarn add @mui/x-data-grid
   yarn add js-cookies
+  yarn add bcryptjs
+  yarn add jsonwebtoken
+  yarn add react-hook-form
+  yarn add axios
 ```
 
 ## Enlaces
@@ -78,6 +80,7 @@ yarn dev
 - [notistack - con Provider](https://github.com/iamhosseindhv/notistack)
 - [date-fns](https://date-fns.org/)
 - [Mui Grid](https://mui.com/x/react-data-grid/getting-started/#main-content)
+- [react-hook-form](https://react-hook-form.com/get-started)
 
 ## Vista previa
 
