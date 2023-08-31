@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
-import { AuthLayout } from '../../components/layouts';
-import { Link as MuiLink, Box, Grid, Typography, TextField, Button, Chip } from '@mui/material';
+import React, { useContext, useState } from 'react';
 import Link from 'next/link';
 
+import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
-import { tesloApi } from '../../api';
+
+import { Link as MuiLink, Box, Grid, Typography, TextField, Button, Chip } from '@mui/material';
 import { ErrorOutline } from '@mui/icons-material';
+
+import { AuthContext } from '../../context';
+import { AuthLayout } from '../../components/layouts';
 import { isEmail } from '../../utils';
 
 type IFormData = {
@@ -15,28 +18,44 @@ type IFormData = {
 };
 
 const Register = () => {
+  const [showError, setShowError] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const { registerUser } = useContext(AuthContext);
+  const router = useRouter();
+
   const {
     register, handleSubmit, formState: { errors }
   } = useForm<IFormData>();
 
-  const [showError, setShowError] = useState(false);
-  const [disabled, setDisabled] = useState(false);
 
   const onRegisterUser = async ({ name, email, password }: IFormData) => {
-
     setShowError(false);
     setDisabled(true);
 
-    try {
-      const { data } = await tesloApi.post('/user/register', { name, email, password });
-      console.log(data); // TODO - extraer la data de respuesta
-      setDisabled(false);
-    } catch (error) {
+    const { hasError, message } = await registerUser(name,email,password);
+
+    if( hasError ){
       setShowError(true);
-      console.log('Error al registrar Usuario');
+      setErrorMessage(message!);
       setTimeout(() => setShowError(false), 3000);
       setDisabled(false);
+      return;
     }
+
+    router.replace('/');
+
+    // try { // NOTE -  METODO SIN CONTEXT
+    //   const { data } = await tesloApi.post('/user/register', { name, email, password });
+    //   console.log(data); // TODO - extraer la data de respuesta
+    //   setDisabled(false);
+    // } catch (error) {
+    //   setShowError(true);
+    //   console.log('Error al registrar Usuario');
+    //   setTimeout(() => setShowError(false), 3000);
+    //   setDisabled(false);
+    // }
   };
 
   return (
@@ -91,6 +110,7 @@ const Register = () => {
 
             <Grid item xs={12} >
               <TextField
+                type="password"
                 label="Contraseña"
                 variant="filled"
                 fullWidth

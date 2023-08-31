@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+
+import { AuthContext } from '../../context';
 
 import { AuthLayout } from '../../components/layouts';
+
 import { Link as MuiLink, Box, Grid, Typography, TextField, Button, Chip } from '@mui/material';
 import Link from 'next/link';
 
@@ -8,6 +11,7 @@ import { useForm } from 'react-hook-form';
 import { isEmail } from '../../utils';
 import { tesloApi } from '../../api';
 import { ErrorOutline } from '@mui/icons-material';
+import { useRouter } from 'next/router';
 
 type IFormData = {
   email: string;
@@ -15,6 +19,11 @@ type IFormData = {
 };
 
 const Login = () => {
+
+  const router = useRouter();
+
+  const { loginUser } = useContext(AuthContext);
+
   const {
     register, handleSubmit, formState: { errors }
   } = useForm<IFormData>();
@@ -27,18 +36,29 @@ const Login = () => {
     setShowError(false);
     setDisabled(true);
 
-    try {
-      const { data } = await tesloApi.post('/user/login', { email, password });
-      const { token, user } = data;
-      setDisabled(false);
+    const isValidLogin = await loginUser(email, password);
 
-    } catch (error) {
+    if (!isValidLogin) {
       setShowError(true);
-      console.log('Error en las credenciales');
       setTimeout(() => setShowError(false), 3000);
       setDisabled(false);
+      return;
     }
 
+    router.replace('/');
+
+    // NOTE - Método sin contexto
+    // try {
+    //   const { data } = await tesloApi.post('/user/login', { email, password });
+    //   const { token, user } = data;
+    //   setDisabled(false);
+
+    // } catch (error) {
+    //   setShowError(true);
+    //   console.log('Error en las credenciales');
+    //   setTimeout(() => setShowError(false), 3000);
+    //   setDisabled(false);
+    // }
   };
 
   return (
@@ -80,6 +100,7 @@ const Login = () => {
 
             <Grid item xs={12} >
               <TextField
+                type="password"
                 label="Contraseña"
                 variant="filled"
                 fullWidth
