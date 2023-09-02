@@ -1,4 +1,17 @@
-import { Box, Divider, Drawer, IconButton, Input, InputAdornment, List, ListItem, ListSubheader } from '@mui/material';
+import {
+  Box,
+  Divider,
+  Drawer,
+  IconButton,
+  Input,
+  InputAdornment,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  ListSubheader,
+} from '@mui/material';
 import {
   AccountCircleOutlined,
   AdminPanelSettings,
@@ -12,7 +25,7 @@ import {
   VpnKeyOutlined,
 } from '@mui/icons-material';
 import { useContext, useState } from 'react';
-import { UiContext } from '../../context';
+import { AuthContext, UiContext } from '../../context';
 import { ItemMenu } from './ItemMenu';
 import { useRouter } from 'next/router';
 
@@ -40,15 +53,20 @@ const listBoottomMenu = [
 
 export const SideMenu = () => {
   const { isMenuOpen, toggleSideMenu } = useContext(UiContext);
+  const { user, isLoggedIn, logout } = useContext(AuthContext);
 
   const router = useRouter();
 
   const [search, setSearch] = useState('');
 
-  const onSearchTerm = () =>  {
-    if(search.trim().length === 0) return null;
-    toggleSideMenu();
+  const onSearchTerm = () => {
+    if (search.trim().length === 0) return null;
     router.push(`/search/${search}`);
+  };
+
+  const navigateTo = (url: string) => {
+    toggleSideMenu();
+    router.push(url);
   };
 
   return (
@@ -64,33 +82,47 @@ export const SideMenu = () => {
           <ListItem>
             <Input
               autoFocus
-              onChange={(e)=> setSearch(e.target.value)}
-              onKeyDown={ (e) => e.key === 'Enter' && onSearchTerm()}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && onSearchTerm()}
               value={search}
               type="text"
               placeholder="Buscar..."
               endAdornment={
                 <InputAdornment position="end">
-                  <IconButton
-                    onClick={onSearchTerm}
-                  >
+                  <IconButton onClick={onSearchTerm}>
                     <SearchOutlined />
                   </IconButton>
                 </InputAdornment>
               }
             />
           </ListItem>
-
-          <ItemMenu lista={topListMenu} />
+          {isLoggedIn && <ItemMenu lista={topListMenu} />}
 
           <ItemMenu lista={listCategoriesMenu} />
 
-          <ItemMenu lista={listBoottomMenu} />
+          {isLoggedIn ? (
+            <ListItemButton onClick={logout}>
+              <ListItemIcon>
+                <LoginOutlined />
+              </ListItemIcon>
+              <ListItemText primary={'Salir'} />
+            </ListItemButton>
+          ) : (
+            <ListItemButton onClick={() => navigateTo(`/auth/login?p=${router.asPath}`)} >
+              <ListItemIcon>
+                <VpnKeyOutlined />
+              </ListItemIcon>
+              <ListItemText primary={'Ingresar'} />
+            </ListItemButton>
+          )}
 
           <Divider />
-
-          <ListSubheader>Admin Panel</ListSubheader>
-          <ItemMenu lista={listAdminPanel} />
+          {user?.role === 'admin' && (
+            <>
+              <ListSubheader>Admin Panel</ListSubheader>
+              <ItemMenu lista={listAdminPanel} />
+            </>
+          )}
         </List>
       </Box>
     </Drawer>

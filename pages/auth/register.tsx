@@ -20,17 +20,17 @@ type IFormData = {
 const Register = () => {
   const [showError, setShowError] = useState(false);
   const [disabled, setDisabled] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
 
   const { registerUser } = useContext(AuthContext);
   const router = useRouter();
 
-  const {
-    register, handleSubmit, formState: { errors }
-  } = useForm<IFormData>();
+  const { register, handleSubmit, formState: { errors } } = useForm<IFormData>();
 
+  const destination = router.query.p?.toString() || '/';
 
-  const onRegisterUser = async ({ name, email, password }: IFormData) => {
+  const onRegisterUser = async (props: IFormData) => {
+    const { name, email, password } = props;
+
     setShowError(false);
     setDisabled(true);
 
@@ -38,13 +38,12 @@ const Register = () => {
 
     if( hasError ){
       setShowError(true);
-      setErrorMessage(message!);
       setTimeout(() => setShowError(false), 3000);
       setDisabled(false);
       return;
     }
 
-    router.replace('/');
+    router.replace(destination);
 
     // try { // NOTE -  METODO SIN CONTEXT
     //   const { data } = await tesloApi.post('/user/register', { name, email, password });
@@ -137,7 +136,7 @@ const Register = () => {
             </Grid>
 
             <Grid item xs={12} display="flex" justifyContent="end" >
-              <Link href="/auth/login" >
+              <Link href={`/auth/login?p=${destination}`} >
                 <MuiLink component="span" >
                   ¿Ya tienes cuenta?
                 </MuiLink>

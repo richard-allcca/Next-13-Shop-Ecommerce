@@ -1,8 +1,10 @@
 import React from 'react';
 import { ShopLayout } from '../../components/layouts';
-import { Link as MuiLink, Box, Button, Card, CardContent, Divider, Grid, Typography } from '@mui/material';
+import { Link as MuiLink, Box, Card, CardContent, Divider, Grid, Typography } from '@mui/material';
 import { CartList, OrderSummary } from '../../components/cart';
 import Link from 'next/link';
+
+import { StyleBtn } from '../../utils';
 
 const summary = () => {
   return (
@@ -28,7 +30,7 @@ const summary = () => {
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }} >
                 <Typography variant="subtitle1" >Direccion de entrega</Typography>
 
-                <Link href="/checkout/adress" >
+                <Link href="/checkout/address" >
                   <MuiLink component="span" underline="always" >
                     Editar
                   </MuiLink>
@@ -54,9 +56,14 @@ const summary = () => {
               <OrderSummary />
 
               <Box sx={{ mt: 3 }} >
-                <Button color="secondary" className="circular-btn" >
-                  Checkout
-                </Button>
+                <Link href="/checkout/address"  >
+                  <MuiLink
+                    sx={StyleBtn}
+                    component="button"
+                  >
+                    Checkout
+                  </MuiLink>
+                </Link>
               </Box>
 
             </CardContent>

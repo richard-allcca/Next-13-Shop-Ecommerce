@@ -9,6 +9,7 @@ interface ContextProps {
 
   loginUser: (email: string, pasword: string) => Promise<boolean>;
   registerUser: (name: string, email: string, password: string) => Promise<IRegisterUser>;
+  logout: () => void;
 }
 
 

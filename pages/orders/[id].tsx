@@ -42,7 +42,7 @@ const order = () => {
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }} >
                 <Typography variant="subtitle1" >Direccion de entrega</Typography>
 
-                <Link href="/checkout/adress" >
+                <Link href="/checkout/address" >
                   <MuiLink component="span" underline="always" >
                     Editar
                   </MuiLink>

@@ -24,12 +24,12 @@ const Login = () => {
 
   const { loginUser } = useContext(AuthContext);
 
-  const {
-    register, handleSubmit, formState: { errors }
-  } = useForm<IFormData>();
+  const { register, handleSubmit, formState: { errors } } = useForm<IFormData>();
 
   const [showError, setShowError] = useState(false);
   const [disabled, setDisabled] = useState(false);
+  
+  const destination = router.query.p?.toString() || '/';
 
   const onLoginUser = async ({ email, password }: IFormData) => {
 
@@ -45,7 +45,7 @@ const Login = () => {
       return;
     }
 
-    router.replace('/');
+    router.replace(destination);
 
     // NOTE - Método sin contexto
     // try {
@@ -127,7 +127,7 @@ const Login = () => {
             </Grid>
 
             <Grid item xs={12} display="flex" justifyContent="end" >
-              <Link href="/auth/register" >
+              <Link href={`/auth/register?p=${destination}`}>
                 <MuiLink component="span" >
                   ¿No tienes cuenta?
                 </MuiLink>

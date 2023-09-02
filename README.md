@@ -53,6 +53,36 @@ yarn dev
   mongodb://localhost:27017/entriesdb
 ```
 
+## Middleware con Next.js 13
+
+Si necesitas agregar más opciones de coincidencia en el middleware de Next.js, puedes modificar la propiedad matcher en el objeto config. Puedes hacerlo de varias formas:
+
+Agregar múltiples rutas de coincidencia: Puedes proporcionar un array de rutas en la propiedad matcher. Por ejemplo:
+
+    export const config = {
+      matcher: ['/checkout/:path*', '/cart/:id'],
+    };
+
+En este caso, el middleware se ejecutará en cualquier URL que coincida con /checkout/:path* o /cart/:id.
+
+Utilizar patrones de coincidencia más específicos: Puedes utilizar patrones de coincidencia más específicos utilizando parámetros y comodines en las rutas. Por ejemplo:
+
+    export const config = {
+      matcher: ['/checkout/:id', '/checkout/:id/:step'],
+    };
+
+En este caso, el middleware se ejecutará en URLs que coincidan con /checkout/:id o /checkout/:id/:step, donde :id y :step son parámetros variables que pueden representar diferentes valores en la URL.
+
+Utilizar expresiones regulares: Si necesitas una lógica de coincidencia más avanzada, puedes utilizar expresiones regulares en la propiedad matcher. Por ejemplo:
+
+    export const config = {
+      matcher: [/^\/checkout\/\d+$/, /^\/cart\/\w+$/],
+    };
+
+En este caso, el middleware se ejecutará en URLs que coincidan con /checkout/ seguido de uno o más dígitos, o /cart/ seguido de uno o más caracteres alfanuméricos.
+
+Recuerda que puedes combinar estas opciones para crear patrones de coincidencia más complejos según tus necesidades.
+
 ## Dependecias
 
 ``` bash
@@ -81,6 +111,7 @@ yarn dev
 - [date-fns](https://date-fns.org/)
 - [Mui Grid](https://mui.com/x/react-data-grid/getting-started/#main-content)
 - [react-hook-form](https://react-hook-form.com/get-started)
+- [Next - Middleware](https://nextjs.org/docs/messages/nested-middleware)
 
 ## Vista previa
 

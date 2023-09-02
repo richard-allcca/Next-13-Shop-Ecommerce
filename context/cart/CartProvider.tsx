@@ -2,8 +2,10 @@ import { FC, PropsWithChildren, useEffect, useReducer } from 'react';
 
 import { CartContext, cartReducer } from './';
 import { ICartProduct } from './../../interface/cart';
+import Cookie from 'js-cookie';
 
 export interface CartState {
+  isLoaded: boolean;
   cart: ICartProduct[];
   numberOfItem: number;
   subTotal: number;
@@ -12,6 +14,7 @@ export interface CartState {
 }
 
 const CART_INITIAL_STATE: CartState = {
+  isLoaded: false,
   cart: [],
   numberOfItem: 0,
   subTotal: 0,
@@ -25,36 +28,18 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }): JSX.Element =
   // Cookies charge inicial
   useEffect(() => {
     try {
-      const getCookie = (name: string) => {
-        const value = '; ' + document.cookie;
-        const parts = value.split(`; ${name}=`)!;
-        // const parts = value.split('; ' + name + '=');
-
-        if (parts.length === 2) {
-          return parts.pop()!.split(';').shift();
-        }
-      };
-
-      const cartCookie = getCookie('cart')!;
-      const cartData = JSON.parse(cartCookie);
-      dispatch({
-        type: 'Cart - load from cookies | storage',
-        payload: cartData,
-      });
+      const cookieProduct = Cookie.get('cart') ? JSON.parse(Cookie.get('cart')!): [];
+      dispatch({ type: 'Cart - load from cookies | storage', payload: cookieProduct });
     } catch (error) {
-      dispatch({
-        type: 'Cart - load from cookies | storage',
-        payload: [],
-      });
+      dispatch({ type: 'Cart - load from cookies | storage', payload: [] });
     }
   }, []);
 
   // Cookies update
   useEffect(() => {
-    if (state.cart.length > 0) {
-      // document.cookie = `cart=${JSON.stringify(state.cart)}`;
-      document.cookie = 'cart=' + JSON.stringify(state.cart) + '; SameSite=None; Secure';
-    }
+    // if (state.cart.length > 0) {
+    // }
+    Cookie.set('cart', JSON.stringify(state.cart), { sameSite: 'none', secure: true });
   }, [state.cart]);
 
   useEffect(() => {
