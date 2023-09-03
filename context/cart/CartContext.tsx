@@ -1,18 +1,22 @@
 import { createContext } from 'react';
 import { ICartProduct } from '../../interface';
+import { IShippingAddresss } from './CartProvider';
 
 
 interface ContextProps {
-  isLoaded: boolean;
-  cart: ICartProduct[];
+  isLoaded    : boolean;
+  cart        : ICartProduct[];
   numberOfItem: number;
-  subTotal: number;
-  tax: number;
-  total: number;
+  subTotal    : number;
+  tax         : number;
+  total       : number;
 
-  addNewProduct: (product: ICartProduct)=>void;
+  shippingAddress?: IShippingAddresss ;
+
+  addNewProduct     : (product: ICartProduct)=>void;
   updateCartQuantity: (product: ICartProduct)=> void;
-  removeCartProduct: (product: ICartProduct) => void;
+  removeCartProduct : (product: ICartProduct) => void;
+  updateAddress    : (address: IShippingAddresss) => void;
 }
 
 

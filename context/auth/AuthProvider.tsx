@@ -40,7 +40,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }): JSX.Element =
     try {
       const { data } = await tesloApi.get('/user/validate-token');
       const { token, user } = data;
-      Cookie.set('token', token);
+      Cookie.set('token', token, { sameSite: 'none', secure: true });
       dispatch({ type: 'Auth - Login', payload: user });
     } catch (error) {
       Cookie.remove('token');
@@ -64,7 +64,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }): JSX.Element =
     try {
       const { data } = await tesloApi.post('/user/register/', { name, email, password });
       const { token, user } = data;
-      Cookie.set('token', token);
+      Cookie.set('token', token, { sameSite: 'none', secure: true });
       dispatch({ type: 'Auth - Login', payload: user });
 
       return {

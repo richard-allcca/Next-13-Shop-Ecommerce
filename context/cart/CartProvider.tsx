@@ -11,7 +11,20 @@ export interface CartState {
   subTotal: number;
   tax: number;
   total: number;
+
+  shippingAddress?: IShippingAddresss;
 }
+
+export interface IShippingAddresss {
+    firstName : string;
+    lastName  : string;
+    address   : string;
+    address2 ?: string;
+    zip       : string;
+    city      : string;
+    country   : string;
+    phone     : string;
+  }
 
 const CART_INITIAL_STATE: CartState = {
   isLoaded: false,
@@ -20,6 +33,8 @@ const CART_INITIAL_STATE: CartState = {
   subTotal: 0,
   tax: 0,
   total: 0,
+
+  shippingAddress: undefined
 };
 
 export const CartProvider: FC<PropsWithChildren> = ({ children }): JSX.Element => {
@@ -35,10 +50,28 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }): JSX.Element =
     }
   }, []);
 
+  useEffect(() => {
+    if(Cookie.get('firstName')){
+
+      const shippingAddress = {
+        firstName : Cookie.get('firstName') || '',
+        lastName  : Cookie.get('lastName' ) || '',
+        address   : Cookie.get('address'  ) || '',
+        address2  : Cookie.get('address2' ) || '',
+        zip       : Cookie.get('zip'      ) || '',
+        city      : Cookie.get('city'     ) || '',
+        country   : Cookie.get('country'  ) || '',
+        phone     : Cookie.get('phone'    ) || '',
+      };
+
+      dispatch({ type: 'Cart - LoadAddress from Cookies', payload: shippingAddress });
+    }
+
+
+  }, []);
+
   // Cookies update
   useEffect(() => {
-    // if (state.cart.length > 0) {
-    // }
     Cookie.set('cart', JSON.stringify(state.cart), { sameSite: 'none', secure: true });
   }, [state.cart]);
 
@@ -92,11 +125,16 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }): JSX.Element =
     dispatch({ type: 'Cart - Remove product in cart', payload: product });
   };
 
+  const updateAddress = (address: IShippingAddresss) => {
+    dispatch({ type: 'Cart - Update Address', payload: address });
+  };
+
   const data = {
     ...state,
     addNewProduct,
     updateCartQuantity,
-    removeCartProduct
+    removeCartProduct,
+    updateAddress,
   };
 
   return <CartContext.Provider value={data}>{children}</CartContext.Provider>;

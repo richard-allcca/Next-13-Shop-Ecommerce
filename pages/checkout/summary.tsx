@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { ShopLayout } from '../../components/layouts';
 import { Link as MuiLink, Box, Card, CardContent, Divider, Grid, Typography } from '@mui/material';
 import { CartList, OrderSummary } from '../../components/cart';
 import Link from 'next/link';
 
-import { StyleBtn } from '../../utils';
+import { StyleBtn, countries } from '../../utils';
+import { CartContext } from '../../context';
 
-const summary = () => {
+const Summary = () => {
+
+  const { shippingAddress } = useContext(CartContext);
+
+  if(!shippingAddress) return <></>;
+
+  const { firstName, lastName, address, address2, zip, city, country, phone } = shippingAddress;
+
   return (
     <ShopLayout title="Resumen de la orden" pageDescription="Resumen de la orden" >
       <Typography variant="h1" component="h1" >
@@ -37,11 +45,12 @@ const summary = () => {
                 </Link>
               </Box>
 
-              <Typography>Richard Allcca</Typography>
-              <Typography>234 algun lugar</Typography>
-              <Typography>Ica - Chincha</Typography>
-              <Typography>Perú</Typography>
-              <Typography>051 987520453</Typography>
+              <Typography>{`${firstName} ${lastName}`}</Typography>
+              <Typography>{address2 ? `${address} - ${address2}` : address}</Typography>
+              <Typography>{`${city} - ${zip}`}</Typography>
+              <Typography>{ countries.filter(c => c.code === country)[0].name }</Typography>
+              {/* <Typography>{ countries.find(c => c.code === country)?.name }</Typography> */}
+              <Typography>{phone}</Typography>
 
               <Divider sx={{ my: 1 }} />
 
@@ -77,4 +86,4 @@ const summary = () => {
   );
 };
 
-export default summary;
+export default Summary;

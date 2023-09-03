@@ -1,15 +1,15 @@
-import { createContext } from 'react';
-import { IUser } from '../../interface';
-import { IRegisterUser } from './AuthProvider';
+import { createContext } from 'react'          ;
+import { IUser         } from '../../interface';
+import { IRegisterUser } from './AuthProvider' ;
 
 
 interface ContextProps {
   isLoggedIn: boolean;
-  user?: IUser;
+  user      ?: IUser;
 
-  loginUser: (email: string, pasword: string) => Promise<boolean>;
+  loginUser    : (email: string, pasword: string ) => Promise<boolean> ;
   registerUser: (name: string, email: string, password: string) => Promise<IRegisterUser>;
-  logout: () => void;
+  logout       : ( ) => void ;
 }
 
 
