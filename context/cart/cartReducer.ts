@@ -3,9 +3,9 @@ import { CartState, IShippingAddresss } from './';
 
 interface IOrderSummary {
   numberOfItem: number;
-  subTotal: number;
-  tax: number;
-  total: number;
+  subTotal    : number;
+  tax         : number;
+  total       : number;
 }
 
 type CartActionType =

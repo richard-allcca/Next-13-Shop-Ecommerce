@@ -1,6 +1,8 @@
 import type { AppProps } from 'next/app';
+import { SessionProvider } from 'next-auth/react';
 
 import { CssBaseline, ThemeProvider } from '@mui/material';
+
 import { SWRConfig } from 'swr';
 
 import { lightTheme } from '../themes';
@@ -11,30 +13,35 @@ import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <SWRConfig
-      value={{
-        // refreshInterval: 300, // Intervalos de tiempo para el refresh
-        fetcher: (resource, init) => fetch(resource, init).then((res) => res.json())
-      }}
-    >
-      <AuthProvider>
+    // <SessionProvider session={session}>
+    <SessionProvider >
 
-        <CartProvider>
+      <SWRConfig
+        value={{
+          // refreshInterval: 300, // Intervalos de tiempo para el refresh
+          fetcher: (resource, init) => fetch(resource, init).then((res) => res.json())
+        }}
+      >
+        <AuthProvider>
 
-          <UiProvider>
+          <CartProvider>
 
-            <ThemeProvider theme={lightTheme} >
-              <CssBaseline />
-              <Component {...pageProps} />
-            </ThemeProvider>
+            <UiProvider>
 
-          </UiProvider>
+              <ThemeProvider theme={lightTheme} >
+                <CssBaseline />
+                <Component {...pageProps} />
+              </ThemeProvider>
 
-        </CartProvider>
+            </UiProvider>
 
-      </AuthProvider>
+          </CartProvider>
 
-    </SWRConfig>
+        </AuthProvider>
+
+      </SWRConfig>
+
+    </SessionProvider>
   );
 }
 

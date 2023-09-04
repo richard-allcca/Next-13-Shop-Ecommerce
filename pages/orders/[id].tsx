@@ -1,9 +1,12 @@
 import React from 'react';
-import { ShopLayout } from '../../components/layouts';
-import { Link as MuiLink, Box, Button, Card, CardContent, Divider, Grid, Typography, Chip } from '@mui/material';
-import { CartList, OrderSummary } from '../../components/cart';
 import Link from 'next/link';
+
+import { ShopLayout } from '../../components/layouts';
+
 import { CreditCardOutlined, CreditScoreOutlined } from '@mui/icons-material';
+import { Link as MuiLink, Box, Card, CardContent, Divider, Grid, Typography, Chip } from '@mui/material';
+
+import { CartList, OrderSummary } from '../../components/cart';
 
 const order = () => {
   return (

@@ -97,6 +97,7 @@ Recuerda que puedes combinar estas opciones para crear patrones de coincidencia 
   yarn add jsonwebtoken
   yarn add react-hook-form
   yarn add axios
+  yarn add next-auth
 ```
 
 ## Enlaces
@@ -112,6 +113,7 @@ Recuerda que puedes combinar estas opciones para crear patrones de coincidencia 
 - [Mui Grid](https://mui.com/x/react-data-grid/getting-started/#main-content)
 - [react-hook-form](https://react-hook-form.com/get-started)
 - [Next - Middleware](https://nextjs.org/docs/messages/nested-middleware)
+- [Next - Auth](https://next-auth.js.org/)
 
 ## Vista previa
 
