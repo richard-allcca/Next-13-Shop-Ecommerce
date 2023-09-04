@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { ShopLayout } from '../../components/layouts';
 import { Link as MuiLink, Box, Card, CardContent, Divider, Grid, Typography } from '@mui/material';
 import { CartList, OrderSummary } from '../../components/cart';
@@ -6,14 +6,27 @@ import Link from 'next/link';
 
 import { StyleBtn, countries } from '../../utils';
 import { CartContext } from '../../context';
+import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
 
 const Summary = () => {
 
-  const { shippingAddress } = useContext(CartContext);
+  const router = useRouter();
 
+  useEffect(() => {
+    if(!Cookies.get('firstName')){
+      console.log('entro');
+
+      router.push('/checkout/address');
+    }
+  }, [router]);
+
+
+  const { shippingAddress } = useContext(CartContext);
   if(!shippingAddress) return <></>;
 
   const { firstName, lastName, address, address2, zip, city, country, phone } = shippingAddress;
+
 
   return (
     <ShopLayout title="Resumen de la orden" pageDescription="Resumen de la orden" >

@@ -1,3 +1,4 @@
+import { getToken } from 'next-auth/jwt';
 import { NextResponse, type NextRequest } from 'next/server';
 import { isValidElement } from 'react';
 
@@ -8,29 +9,43 @@ export async function middleware(req: NextRequest) {
 
   if (previousPage.startsWith('/checkout')) {
 
-    const token = req.cookies.get('token')?.value;
+    // NOTE - Método con NextAuth (recomendado)
+    const session = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
-    if (!token) {
-      return NextResponse.redirect(
-        new URL(`/auth/login?p=${previousPage}`, req.url)
-      );
+    if (!session) {
+      const requestedPage = req.nextUrl.pathname;
+      const url = req.nextUrl.clone();
+      url.pathname = '/auth/login';
+      url.search = `p=${requestedPage}`;
+
+      return NextResponse.redirect(url);
     }
 
-    try {
-      await isValidElement(token);
-      return NextResponse.next();
+    // NOTE - Método sin NextAuth
+    //   const token = req.cookies.get('token')?.value;
 
-    } catch (error) {
+    //   if (!token) {
+    //     return NextResponse.redirect(
+    //       new URL(`/auth/login?p=${previousPage}`, req.url)
+    //     );
+    //   }
 
-      return NextResponse.redirect(
-        new URL(`/auth/login?p=${previousPage}`, req.url)
-      );
-    }
+    //   try {
+    //     await isValidElement(token);
+    //     return NextResponse.next();
+
+    //   } catch (error) {
+
+    //     return NextResponse.redirect(
+    //       new URL(`/auth/login?p=${previousPage}`, req.url)
+    //     );
+    //   }
   }
 
   // return NextResponse.next();
 }
 
 export const config = {
+  // matcher: ['/checkout/address','/checkout/summary'],
   matcher: ['/checkout/:path*'],
 };

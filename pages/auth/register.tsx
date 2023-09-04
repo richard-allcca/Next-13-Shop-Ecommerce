@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { getSession, signIn } from 'next-auth/react';
 import Link from 'next/link';
 
 import { useRouter } from 'next/router';
@@ -10,6 +11,9 @@ import { ErrorOutline } from '@mui/icons-material';
 import { AuthContext } from '../../context';
 import { AuthLayout } from '../../components/layouts';
 import { isEmail } from '../../utils';
+
+import { GetServerSideProps } from 'next';
+import { db } from '../../database';
 
 type IFormData = {
   name: string;
@@ -29,23 +33,28 @@ const Register = () => {
   const destination = router.query.p?.toString() || '/';
 
   const onRegisterUser = async (props: IFormData) => {
-    const { name, email, password } = props;
-
     setShowError(false);
     setDisabled(true);
 
-    const { hasError, message } = await registerUser(name,email,password);
+    const { name, email, password } = props;
 
-    if( hasError ){
+    const { hasError, message } = await registerUser(name, email, password);
+
+    if (hasError) {
       setShowError(true);
       setTimeout(() => setShowError(false), 3000);
       setDisabled(false);
       return;
     }
 
-    router.replace(destination);
+    // NOTE - Método con NextAuth
+    await signIn('credentials', { email, password });
 
-    // try { // NOTE -  METODO SIN CONTEXT
+    // NOTE - Metodo con context
+    // router.replace(destination);
+
+    // NOTE -  METODO sin Context
+    // try {
     //   const { data } = await tesloApi.post('/user/register', { name, email, password });
     //   console.log(data); // TODO - extraer la data de respuesta
     //   setDisabled(false);
@@ -149,6 +158,32 @@ const Register = () => {
       </form>
     </AuthLayout>
   );
+};
+
+// You should use getServerSideProps when:
+// - Only if you need to pre-render a page whose data must be fetched at request time
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+
+  const { req, query } = ctx;
+
+  await db.connect();
+  const session = await getSession({ req });
+
+  const { p = '/' } = query;
+
+  if (session) {
+    await db.disconnect();
+    return {
+      redirect: {
+        destination: p.toLocaleString(),
+        permanent: false
+      }
+    };
+  }
+
+  return {
+    props: {}
+  };
 };
 
 export default Register;

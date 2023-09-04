@@ -1,17 +1,20 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { getProviders, getSession, signIn } from 'next-auth/react';
 
 import { AuthContext } from '../../context';
 
 import { AuthLayout } from '../../components/layouts';
 
-import { Link as MuiLink, Box, Grid, Typography, TextField, Button, Chip } from '@mui/material';
+import { Link as MuiLink, Box, Grid, Typography, TextField, Button, Chip, Divider } from '@mui/material';
 import Link from 'next/link';
 
 import { useForm } from 'react-hook-form';
 import { isEmail } from '../../utils';
-import { tesloApi } from '../../api';
 import { ErrorOutline } from '@mui/icons-material';
 import { useRouter } from 'next/router';
+import { tesloApi } from '../../api';
+
+import { GetServerSideProps } from 'next';
 
 type IFormData = {
   email: string;
@@ -22,32 +25,44 @@ const Login = () => {
 
   const router = useRouter();
 
-  const { loginUser } = useContext(AuthContext);
+  // const { loginUser } = useContext(AuthContext);
 
   const { register, handleSubmit, formState: { errors } } = useForm<IFormData>();
 
   const [showError, setShowError] = useState(false);
   const [disabled, setDisabled] = useState(false);
-  
+  const [provider, setProvider] = useState<any>({}); // NextAuth
+
+  useEffect(() => { // UI provider NextAuth
+    getProviders().then(prov => {
+      console.log(prov);
+      setProvider(prov);
+    });
+  }, []);
+
+
   const destination = router.query.p?.toString() || '/';
 
   const onLoginUser = async ({ email, password }: IFormData) => {
-
+    // NOTE - Método con credentials de NextAuth
     setShowError(false);
-    setDisabled(true);
+    signIn('credentials', { email, password });
 
-    const isValidLogin = await loginUser(email, password);
+    // NOTE - Método con context
+    // setShowError(false);
+    // setDisabled(true);
 
-    if (!isValidLogin) {
-      setShowError(true);
-      setTimeout(() => setShowError(false), 3000);
-      setDisabled(false);
-      return;
-    }
+    // const isValidLogin = await loginUser(email, password);
 
-    router.replace(destination);
+    // if (!isValidLogin) {
+    //   setShowError(true);
+    //   setTimeout(() => setShowError(false), 3000);
+    //   setDisabled(false);
+    //   return;
+    // }
+    // router.replace(destination);
 
-    // NOTE - Método sin contexto
+    // NOTE - Método sin context
     // try {
     //   const { data } = await tesloApi.post('/user/login', { email, password });
     //   const { token, user } = data;
@@ -133,6 +148,31 @@ const Login = () => {
                 </MuiLink>
               </Link>
             </Grid>
+
+            {/* Proveedores de NextAuth */}
+            <Grid item xs={12} display={'flex'} flexDirection={'column'} justifyContent={'end'} >
+              <Divider sx={{ width: '100%', mb: 2 }} />
+              {
+                Object.values(provider).map((provider: any, index) => {
+
+                  if (provider.id === 'credentials') return (<div key="credentials" ></div>);// filtro
+
+                  return (
+                    <Button
+                      key={index}
+                      variant="outlined"
+                      fullWidth
+                      color="primary"
+                      sx={{ mb: 1 }}
+                      onClick={()=> signIn(provider.id)}
+                    >
+                      {provider.name}
+                    </Button>
+                  );
+                })
+              }
+            </Grid>
+
           </Grid>
 
         </Box>
@@ -141,6 +181,29 @@ const Login = () => {
 
     </AuthLayout>
   );
+};
+
+// You should use getServerSideProps when:
+// - Only if you need to pre-render a page whose data must be fetched at request time
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+
+  const { req, query } = ctx;
+  const sesion = await getSession({ req });
+
+  const { p = '/' } = query;
+
+  if (sesion) {
+    return {
+      redirect: {
+        destination: p.toString(),
+        permanent: false
+      }
+    };
+  }
+
+  return {
+    props: {}
+  };
 };
 
 export default Login;

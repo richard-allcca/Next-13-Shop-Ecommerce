@@ -30,9 +30,22 @@ export const authOptions = {
 
   ],
 
+  // Custom pages
+  pages : {
+    signIn: '/auth/login',
+    newUser: 'auth/register'
+  },
+
   // Callbacks
   jwt: {
     // secret: process.env.JWT_SECRET_SEED, // DEPRECATED
+  },
+
+  // Expiration sesion (opcional me funciono bien sin esto)
+  session: {
+    maxAge: 2592000, // 30d
+    strategy: 'jwt',
+    updateAge: 86400, // c/dia
   },
 
   callbacks: {
