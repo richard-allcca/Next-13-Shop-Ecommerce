@@ -30,7 +30,7 @@ export const CartList: FC<Props> = ({ editable }) => {
                 <MuiLink component={'div'} >
                   <CardActionArea>
                     <CardMedia
-                      image={`/products/${product.images}`}
+                      image={`/products/${product.image}`}
                       component="img"
                       sx={{ borderRadius: '5px' }}
                     />

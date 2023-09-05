@@ -1,36 +1,36 @@
 import { ChangeEvent, useContext, useEffect, useState } from 'react';
 
-import { useRouter  } from 'next/router'             ;
-import { useForm    } from 'react-hook-form'         ;
-import   Cookies      from 'js-cookie'               ;
+import { useRouter } from 'next/router';
+import { useForm } from 'react-hook-form';
+import Cookies from 'js-cookie';
 
 import { Box, Button, FormControl, Grid, MenuItem, TextField, Typography } from '@mui/material';
 
 import { CartContext } from '../../context';
 import { ShopLayout } from '../../components/layouts';
-import { countries  } from '../../utils'             ;
+import { countries } from '../../utils';
 
 type FormData = {
   firstName: string;
-  lastName: string;
-  address: string;
-  address2?: string;
-  zip: string;
-  city: string;
-  country: string;
-  phone: string;
+  lastName : string;
+  address  : string;
+  address2 ?: string;
+  zip      : string;
+  city     : string;
+  country  : string;
+  phone    : string;
 };
 
 const getAddressFromCookies = (): FormData => {
   return {
-    firstName : Cookies.get('firstName') || '',
-    lastName  : Cookies.get('lastName' ) || '',
-    address   : Cookies.get('address'  ) || '',
-    address2  : Cookies.get('address2' ) || '',
-    zip       : Cookies.get('zip'      ) || '',
-    city      : Cookies.get('city'     ) || '',
-    country   : Cookies.get('country'  ) || '',
-    phone     : Cookies.get('phone'    ) || '',
+    firstName: Cookies.get('firstName') || '',
+    lastName : Cookies.get('lastName') || '',
+    address  : Cookies.get('address') || '',
+    address2 : Cookies.get('address2') || '',
+    zip      : Cookies.get('zip') || '',
+    city     : Cookies.get('city') || '',
+    country  : Cookies.get('country') || '',
+    phone    : Cookies.get('phone') || '',
   };
 };
 
@@ -50,14 +50,14 @@ const AddressPage = () => {
   }, []);
 
   const onSubmitAddress = (data: FormData) => {
-    Cookies.set('firstName' , data.firstName           );
-    Cookies.set('lastName'  , data.lastName            );
-    Cookies.set('address'   , data.address             );
-    Cookies.set('address2'  , data.address2 || ''      );
-    Cookies.set('zip'       , data.zip                 );
-    Cookies.set('city'      , data.city                );
-    Cookies.set('country'   , selectedCountry          );
-    Cookies.set('phone'     , data.phone               );
+    Cookies.set('firstName', data           .firstName     , { sameSite: 'none', secure: true });
+    Cookies.set('lastName' , data           .lastName      , { sameSite: 'none', secure: true });
+    Cookies.set('address'  , data           .address       , { sameSite: 'none', secure: true });
+    Cookies.set('address2' , data           .address2 || '', { sameSite: 'none', secure: true });
+    Cookies.set('zip'      , data           .zip           , { sameSite: 'none', secure: true });
+    Cookies.set('city'     , data           .city          , { sameSite: 'none', secure: true });
+    Cookies.set('country'  , selectedCountry               , { sameSite: 'none', secure: true });
+    Cookies.set('phone'    , data           .phone         , { sameSite: 'none', secure: true });
 
     updateAddress(data);
     router.push('/checkout/summary');

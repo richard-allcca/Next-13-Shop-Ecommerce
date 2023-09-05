@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { ShopLayout } from '../../components/layouts';
-import { Link as MuiLink, Box, Card, CardContent, Divider, Grid, Typography } from '@mui/material';
+import { Link as MuiLink, Box, Card, CardContent, Divider, Grid, Typography, Button } from '@mui/material';
 import { CartList, OrderSummary } from '../../components/cart';
 import Link from 'next/link';
 
@@ -15,17 +15,19 @@ const Summary = () => {
 
   useEffect(() => {
     if(!Cookies.get('firstName')){
-      console.log('entro');
-
       router.push('/checkout/address');
     }
   }, [router]);
 
 
-  const { shippingAddress } = useContext(CartContext);
-  if(!shippingAddress) return <></>;
+  const { shippingAddress, numberOfItem, createOrder } = useContext(CartContext);
 
+  if(!shippingAddress) return <></>;
   const { firstName, lastName, address, address2, zip, city, country, phone } = shippingAddress;
+
+  const onCreateOrder = () => {
+    createOrder();
+  };
 
 
   return (
@@ -44,7 +46,7 @@ const Summary = () => {
           <Card className="summary-card" >
             <CardContent>
 
-              <Typography variant="h2" >Resumen (3 productos)</Typography>
+              <Typography variant="h2" >{`Resumen (${numberOfItem} productos)`}</Typography>
 
               <Divider sx={{ my: 1 }} />
 
@@ -78,14 +80,14 @@ const Summary = () => {
               <OrderSummary />
 
               <Box sx={{ mt: 3 }} >
-                <Link href="/checkout/address"  >
-                  <MuiLink
-                    sx={StyleBtn}
-                    component="button"
-                  >
-                    Checkout
-                  </MuiLink>
-                </Link>
+                <Button
+                  color="secondary"
+                  className="circular-btn"
+                  fullWidth
+                  onClick={onCreateOrder}
+                >
+                  Confirmar Orden
+                </Button>
               </Box>
 
             </CardContent>

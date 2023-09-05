@@ -17,10 +17,11 @@ interface Props {
 }
 
 const ProductPage: NextPage<Props> = ({ product }) => {
+  // console.log('product',product);
 
   const [tempCartProduct, setTempCartProduct] = useState<ICartProduct>({
-    _id: product._index,
-    images: product.images[0],
+    _id: product._id,
+    image: product.images[0],
     price: product.price,
     size: undefined,
     slug: product.slug,

@@ -1,30 +1,21 @@
 import { FC, PropsWithChildren, useEffect, useReducer } from 'react';
 
 import { CartContext, cartReducer } from './';
-import { ICartProduct } from './../../interface/cart';
+import { ICartProduct, IOrder, IShippingAddress } from '../../interface';
+
 import Cookie from 'js-cookie';
+import { tesloApi } from '../../api';
 
 export interface CartState {
-  isLoaded    : boolean;
-  cart        : ICartProduct[];
+  isLoaded: boolean;
+  cart: ICartProduct[];
   numberOfItem: number;
-  subTotal    : number;
-  tax         : number;
-  total       : number;
+  subTotal: number;
+  tax: number;
+  total: number;
 
-  shippingAddress?: IShippingAddresss;
+  shippingAddress?: IShippingAddress;
 }
-
-export interface IShippingAddresss {
-    firstName : string;
-    lastName  : string;
-    address   : string;
-    address2 ?: string;
-    zip       : string;
-    city      : string;
-    country   : string;
-    phone     : string;
-  }
 
 const CART_INITIAL_STATE: CartState = {
   isLoaded: false,
@@ -43,7 +34,7 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }): JSX.Element =
   // Cookies charge inicial
   useEffect(() => {
     try {
-      const cookieProduct = Cookie.get('cart') ? JSON.parse(Cookie.get('cart')!): [];
+      const cookieProduct = Cookie.get('cart') ? JSON.parse(Cookie.get('cart')!) : [];
       dispatch({ type: 'Cart - load from cookies | storage', payload: cookieProduct });
     } catch (error) {
       dispatch({ type: 'Cart - load from cookies | storage', payload: [] });
@@ -51,17 +42,17 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }): JSX.Element =
   }, []);
 
   useEffect(() => {
-    if(Cookie.get('firstName')){
+    if (Cookie.get('firstName')) {
 
       const shippingAddress = {
-        firstName : Cookie.get('firstName') || '',
-        lastName  : Cookie.get('lastName' ) || '',
-        address   : Cookie.get('address'  ) || '',
-        address2  : Cookie.get('address2' ) || '',
-        zip       : Cookie.get('zip'      ) || '',
-        city      : Cookie.get('city'     ) || '',
-        country   : Cookie.get('country'  ) || '',
-        phone     : Cookie.get('phone'    ) || '',
+        firstName: Cookie.get('firstName') || '',
+        lastName: Cookie.get('lastName') || '',
+        address: Cookie.get('address') || '',
+        address2: Cookie.get('address2') || '',
+        zip: Cookie.get('zip') || '',
+        city: Cookie.get('city') || '',
+        country: Cookie.get('country') || '',
+        phone: Cookie.get('phone') || '',
       };
 
       dispatch({ type: 'Cart - LoadAddress from Cookies', payload: shippingAddress });
@@ -125,8 +116,35 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }): JSX.Element =
     dispatch({ type: 'Cart - Remove product in cart', payload: product });
   };
 
-  const updateAddress = (address: IShippingAddresss) => {
+  const updateAddress = (address: IShippingAddress) => {
     dispatch({ type: 'Cart - Update Address', payload: address });
+  };
+
+  const createOrder = async () => {
+
+    if (!state.shippingAddress) throw new Error('No hay dirección de entrega');
+
+    const body: IOrder = {
+      orderItems: state.cart.map(p => ({
+        ...p,
+        size: p.size! // fix falla de size opcional
+      })),
+      shippingAddress: state.shippingAddress,
+      numberOfItems: state.numberOfItem,
+      subTotal: state.subTotal,
+      tax: state.tax,
+      total: state.total,
+      isPaid: false
+    };
+
+    console.log({ state });
+    try {
+      const { data } = await tesloApi.post('/orders', body);
+
+    } catch (error) {
+      console.log(error);
+
+    }
   };
 
   const data = {
@@ -135,6 +153,7 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }): JSX.Element =
     updateCartQuantity,
     removeCartProduct,
     updateAddress,
+    createOrder,
   };
 
   return <CartContext.Provider value={data}>{children}</CartContext.Provider>;

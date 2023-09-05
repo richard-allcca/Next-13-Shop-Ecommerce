@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 
 export interface IProduct {
-  _index:string;
+  _id:string;
   description: string;
   images: string[];
   inStock: number;
