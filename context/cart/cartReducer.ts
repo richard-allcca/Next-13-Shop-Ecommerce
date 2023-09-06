@@ -2,7 +2,7 @@ import { ICartProduct, IShippingAddress } from '../../interface';
 import { CartState } from './';
 
 interface IOrderSummary {
-  numberOfItem: number;
+  numberOfItems: number;
   subTotal    : number;
   tax         : number;
   total       : number;
@@ -15,7 +15,8 @@ type CartActionType =
   | { type: 'Cart - Remove product in cart'; payload: ICartProduct }
   | { type: 'Cart - Update order summary'; payload: IOrderSummary }
   | { type: 'Cart - LoadAddress from Cookies'; payload: IShippingAddress }
-  | { type: 'Cart - Update Address'; payload: IShippingAddress };
+  | { type: 'Cart - Update Address'; payload: IShippingAddress }
+  | { type: 'Cart - Order Conmplete' };
 
 export const cartReducer = (state: CartState, action: CartActionType): CartState => {
   switch (action.type) {
@@ -25,11 +26,13 @@ export const cartReducer = (state: CartState, action: CartActionType): CartState
         isLoaded: true,
         cart: [...action.payload],
       };
+
     case 'Cart - Update Product in cart':
       return {
         ...state,
         cart: [...action.payload],
       };
+
     case 'Cart - Change cart quantity':
       return {
         ...state,
@@ -40,6 +43,7 @@ export const cartReducer = (state: CartState, action: CartActionType): CartState
           return action.payload;
         }),
       };
+
     case 'Cart - Remove product in cart':
       return {
         ...state,
@@ -47,6 +51,7 @@ export const cartReducer = (state: CartState, action: CartActionType): CartState
           (product) => !(product._id === action.payload._id && product.size === action.payload.size),
         ),
       };
+
     case 'Cart - Update order summary':
       return {
         ...state,
@@ -54,10 +59,20 @@ export const cartReducer = (state: CartState, action: CartActionType): CartState
       };
 
     case 'Cart - Update Address':
+
     case 'Cart - LoadAddress from Cookies':
       return {
         ...state,
         shippingAddress: action.payload
+      };
+    case 'Cart - Order Conmplete':
+      return {
+        ...state,
+        cart: [],
+        numberOfItems: 0,
+        subTotal: 0,
+        tax: 0,
+        total: 0
       };
 
     default:

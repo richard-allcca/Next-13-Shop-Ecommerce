@@ -52,7 +52,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   if (!foundProducts) {
     let products = await getAllProducst();
-    
+
     return {
       props: {
         products,

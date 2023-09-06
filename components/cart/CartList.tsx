@@ -4,13 +4,14 @@ import Link from 'next/link';
 import { ItemCounter } from '../ui';
 import { FC, useContext } from 'react';
 import { CartContext } from '../../context';
-import { ICartProduct } from '../../interface';
+import { ICartProduct, IOrderItem } from '../../interface';
 
 interface Props {
   editable?: boolean;
+  products?: IOrderItem[];
 }
 
-export const CartList: FC<Props> = ({ editable }) => {
+export const CartList: FC<Props> = ({ editable = false, products }) => {
 
   const { cart, updateCartQuantity, removeCartProduct } = useContext(CartContext);
 
@@ -19,10 +20,11 @@ export const CartList: FC<Props> = ({ editable }) => {
     updateCartQuantity(product);
   };
 
+  const productsToShow = products ? products : cart;
   return (
     <>
       {
-        cart.map((product, index) => (
+        productsToShow.map((product, index) => (
           <Grid container spacing={2} key={index} sx={{ mb: 1 }} >
 
             <Grid item xs={3} >
@@ -49,7 +51,7 @@ export const CartList: FC<Props> = ({ editable }) => {
                     <ItemCounter
                       quantity={product.quantity}
                       stock={10}
-                      setQuantity={(value) => setQuatityProduct(product, value)}
+                      setQuantity={(value) => setQuatityProduct(product as ICartProduct, value)}
                     />
                   ) : <Typography variant="h5" >
                     {product.quantity}
@@ -67,7 +69,7 @@ export const CartList: FC<Props> = ({ editable }) => {
                   <Button
                     variant="text"
                     color="secondary"
-                    onClick={() => removeCartProduct(product)}
+                    onClick={() => removeCartProduct(product as ICartProduct)}
                   >
                     Remover
                   </Button>

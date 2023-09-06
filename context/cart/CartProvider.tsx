@@ -5,11 +5,12 @@ import { ICartProduct, IOrder, IShippingAddress } from '../../interface';
 
 import Cookie from 'js-cookie';
 import { tesloApi } from '../../api';
+import axios from 'axios';
 
 export interface CartState {
   isLoaded: boolean;
   cart: ICartProduct[];
-  numberOfItem: number;
+  numberOfItems: number;
   subTotal: number;
   tax: number;
   total: number;
@@ -20,7 +21,7 @@ export interface CartState {
 const CART_INITIAL_STATE: CartState = {
   isLoaded: false,
   cart: [],
-  numberOfItem: 0,
+  numberOfItems: 0,
   subTotal: 0,
   tax: 0,
   total: 0,
@@ -67,12 +68,12 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }): JSX.Element =
   }, [state.cart]);
 
   useEffect(() => {
-    const numberOfItem = state.cart.reduce((acc, current) => current.quantity + acc, 0);
+    const numberOfItems = state.cart.reduce((acc, current) => current.quantity + acc, 0);
     const subTotal = state.cart.reduce((acc, current) => current.price * current.quantity + acc, 0);
     const taxRate = Number(process.env.NEXT_PUBLIC_TAX_RATE || 0);
 
     const orderSummary = {
-      numberOfItem,
+      numberOfItems,
       subTotal,
       tax: subTotal * taxRate,
       total: subTotal * (taxRate + 1),
@@ -120,7 +121,7 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }): JSX.Element =
     dispatch({ type: 'Cart - Update Address', payload: address });
   };
 
-  const createOrder = async () => {
+  const createOrder = async (): Promise<{ hasError: boolean; message: string; }> => {
 
     if (!state.shippingAddress) throw new Error('No hay dirección de entrega');
 
@@ -130,20 +131,36 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }): JSX.Element =
         size: p.size! // fix falla de size opcional
       })),
       shippingAddress: state.shippingAddress,
-      numberOfItems: state.numberOfItem,
+      numberOfItems: state.numberOfItems,
       subTotal: state.subTotal,
       tax: state.tax,
       total: state.total,
       isPaid: false
     };
 
-    console.log({ state });
     try {
-      const { data } = await tesloApi.post('/orders', body);
+      const { data } = await tesloApi.post<IOrder>('/orders', body);
+
+      dispatch({ type: 'Cart - Order Conmplete' });
+
+      return {
+        hasError: false,
+        message: data._id!
+      };
 
     } catch (error) {
       console.log(error);
+      if (axios.isAxiosError(error)) {
+        return {
+          hasError: true,
+          message: error.response?.data.message
+        };
+      }
 
+      return {
+        hasError: true,
+        message: 'Error no controlado hable con el administrador'
+      };
     }
   };
 

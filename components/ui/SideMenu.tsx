@@ -31,7 +31,7 @@ import { useRouter } from 'next/router';
 
 const topListMenu = [
   { text: 'Perfil', icon: <AccountCircleOutlined /> },
-  { text: 'Mis Ordenes', icon: <ConfirmationNumberOutlined /> },
+  { text: 'Mis Ordenes', icon: <ConfirmationNumberOutlined />, path: '/orders/history' },
 ];
 
 const listCategoriesMenu = [

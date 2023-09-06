@@ -5,7 +5,7 @@ import { ICartProduct, IShippingAddress } from '../../interface';
 interface ContextProps {
   isLoaded    : boolean;
   cart        : ICartProduct[];
-  numberOfItem: number;
+  numberOfItems: number;
   subTotal    : number;
   tax         : number;
   total       : number;
@@ -16,7 +16,7 @@ interface ContextProps {
   updateCartQuantity: (product: ICartProduct)=> void;
   removeCartProduct : (product: ICartProduct) => void;
   updateAddress     : (address: IShippingAddress) => void;
-  createOrder       : () => void;
+  createOrder       : () => Promise<{ hasError: boolean; message: string; }>;
 }
 
 

@@ -11,7 +11,7 @@ import { CartList, OrderSummary } from '../../components/cart';
 import { StyleBtn } from '../../utils';
 
 const Index = () => {
-  const { isLoaded, cart, numberOfItem } = useContext(CartContext);
+  const { isLoaded, cart } = useContext(CartContext);
 
   const router = useRouter();
 

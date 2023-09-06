@@ -3,11 +3,22 @@ import { useContext } from 'react';
 import { CartContext } from '../../context';
 import { format } from './../../utils/currency';
 
-export const OrderSummary = () => {
+interface Props {
+  orderValues?: {
+    numberOfItems: number;
+    subTotal: number;
+    total: number;
+    tax: number;
+  };
+}
 
-  const { numberOfItem, subTotal, tax, total } = useContext(CartContext);
+export const OrderSummary = (props: Props) => {
 
-  const getCountProducts = `${numberOfItem} ${numberOfItem > 1 ? 'productos': 'productos'}`;
+  const { numberOfItems, subTotal, tax, total } = useContext(CartContext);
+
+  const getValues = props.orderValues || { numberOfItems, subTotal, total, tax };
+
+  const getTextCountItems =  getValues.numberOfItems > 1 ? 'Productos' : 'Producto';
 
   return (
     <Grid container >
@@ -15,7 +26,7 @@ export const OrderSummary = () => {
         <Typography >N°. Productos</Typography>
       </Grid>
       <Grid item xs={6} display="flex" justifyContent="end" >
-        <Typography>{getCountProducts}</Typography>
+        <Typography>{numberOfItems} {getTextCountItems}</Typography>
       </Grid>
 
       <Grid item xs={6}>

@@ -35,7 +35,7 @@ const menuItems = [
 
 export const Navbar = () => {
   const { toggleSideMenu } = useContext(UiContext);
-  const { numberOfItem } = useContext(CartContext);
+  const { numberOfItems } = useContext(CartContext);
 
   const router = useRouter();
 
@@ -47,7 +47,7 @@ export const Navbar = () => {
     router.push(`/search/${search}`);
   };
 
-  const countItem = numberOfItem > 9 ? '+9' : numberOfItem;
+  const countItem = numberOfItems > 9 ? '+9' : numberOfItems;
 
   return (
     <AppBar>

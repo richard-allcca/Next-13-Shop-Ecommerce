@@ -1,32 +1,43 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ShopLayout } from '../../components/layouts';
-import { Link as MuiLink, Box, Card, CardContent, Divider, Grid, Typography, Button } from '@mui/material';
+import { Link as MuiLink, Box, Card, CardContent, Divider, Grid, Typography, Button, Chip } from '@mui/material';
 import { CartList, OrderSummary } from '../../components/cart';
 import Link from 'next/link';
 
-import { StyleBtn, countries } from '../../utils';
+import { countries } from '../../utils';
 import { CartContext } from '../../context';
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
 
 const Summary = () => {
-
   const router = useRouter();
 
+  const [isPositing, setIsPositing] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
   useEffect(() => {
-    if(!Cookies.get('firstName')){
+    if (!Cookies.get('firstName')) {
       router.push('/checkout/address');
     }
   }, [router]);
 
+  const { shippingAddress, numberOfItems, createOrder } = useContext(CartContext);
 
-  const { shippingAddress, numberOfItem, createOrder } = useContext(CartContext);
-
-  if(!shippingAddress) return <></>;
+  if (!shippingAddress) return <></>;
   const { firstName, lastName, address, address2, zip, city, country, phone } = shippingAddress;
 
-  const onCreateOrder = () => {
-    createOrder();
+  const onCreateOrder = async () => {
+    setIsPositing(true);
+
+    const { hasError, message } = await createOrder();
+
+    if(hasError){
+      setIsPositing(false);
+      setErrorMessage(message);
+      return;
+    }
+
+    router.replace(`/orders/${message}`);
   };
 
 
@@ -46,7 +57,7 @@ const Summary = () => {
           <Card className="summary-card" >
             <CardContent>
 
-              <Typography variant="h2" >{`Resumen (${numberOfItem} productos)`}</Typography>
+              <Typography variant="h2" >{`Resumen (${numberOfItems} productos)`}</Typography>
 
               <Divider sx={{ my: 1 }} />
 
@@ -63,7 +74,7 @@ const Summary = () => {
               <Typography>{`${firstName} ${lastName}`}</Typography>
               <Typography>{address2 ? `${address} - ${address2}` : address}</Typography>
               <Typography>{`${city} - ${zip}`}</Typography>
-              <Typography>{ countries.filter(c => c.code === country)[0].name }</Typography>
+              <Typography>{countries.filter(c => c.code === country)[0].name}</Typography>
               {/* <Typography>{ countries.find(c => c.code === country)?.name }</Typography> */}
               <Typography>{phone}</Typography>
 
@@ -79,16 +90,23 @@ const Summary = () => {
 
               <OrderSummary />
 
-              <Box sx={{ mt: 3 }} >
+              <Box sx={{ mt: 3 }} display={'flex'} flexDirection={'column'} >
                 <Button
                   color="secondary"
                   className="circular-btn"
                   fullWidth
                   onClick={onCreateOrder}
+                  disabled={isPositing}
                 >
                   Confirmar Orden
                 </Button>
               </Box>
+
+              <Chip
+                color="error"
+                label={errorMessage}
+                sx={{ display: errorMessage ? 'block' : 'none', mt: 2 }}
+              />
 
             </CardContent>
           </Card>
