@@ -62,6 +62,8 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     const userId = await User.findOne({ email: session.user.email });
 
     const newOrder = new Order({ ...req.body, isPaid: false, user: userId?._id });
+    newOrder.total = Math.round(newOrder.total * 100) / 100;
+
     await newOrder.save();
     await db.disconnect();
 

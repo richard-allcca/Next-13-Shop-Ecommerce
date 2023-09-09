@@ -18,6 +18,8 @@ export interface IOrder {
   // pay
   isPaid : boolean;
   paidAt?: string ;
+
+  transactionId?: string;
 }
 
 

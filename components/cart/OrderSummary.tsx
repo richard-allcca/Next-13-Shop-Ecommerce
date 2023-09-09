@@ -26,28 +26,28 @@ export const OrderSummary = (props: Props) => {
         <Typography >N°. Productos</Typography>
       </Grid>
       <Grid item xs={6} display="flex" justifyContent="end" >
-        <Typography>{numberOfItems} {getTextCountItems}</Typography>
+        <Typography>{getValues.numberOfItems} {getTextCountItems}</Typography>
       </Grid>
 
       <Grid item xs={6}>
         <Typography>SubTotal</Typography>
       </Grid>
       <Grid item xs={6} display="flex" justifyContent="end" >
-        <Typography>{format(subTotal)}</Typography>
+        <Typography>{format(getValues.subTotal)}</Typography>
       </Grid>
 
       <Grid item xs={6}>
         <Typography>Impuestos ({process.env.NEXT_PUBLIC_TAX_RATE})%</Typography>
       </Grid>
       <Grid item xs={6} display="flex" justifyContent="end" >
-        <Typography>{format(tax)}</Typography>
+        <Typography>{format(getValues.tax)}</Typography>
       </Grid>
 
       <Grid item xs={6} sx={{ mt: 2 }} >
         <Typography variant="subtitle1" >Total</Typography>
       </Grid>
       <Grid item xs={6} display="flex" justifyContent="end" sx={{ mt: 2 }} >
-        <Typography variant="subtitle1" >{format(total)}</Typography>
+        <Typography variant="subtitle1" >{format(getValues.total)}</Typography>
       </Grid>
     </Grid>
   );

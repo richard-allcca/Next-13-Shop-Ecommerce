@@ -59,29 +59,44 @@ Si necesitas agregar más opciones de coincidencia en el middleware de Next.js, 
 
 Agregar múltiples rutas de coincidencia: Puedes proporcionar un array de rutas en la propiedad matcher. Por ejemplo:
 
+``` js
     export const config = {
       matcher: ['/checkout/:path*', '/cart/:id'],
     };
+```
 
 En este caso, el middleware se ejecutará en cualquier URL que coincida con /checkout/:path* o /cart/:id.
 
 Utilizar patrones de coincidencia más específicos: Puedes utilizar patrones de coincidencia más específicos utilizando parámetros y comodines en las rutas. Por ejemplo:
 
+``` js
     export const config = {
       matcher: ['/checkout/:id', '/checkout/:id/:step'],
     };
+```
 
 En este caso, el middleware se ejecutará en URLs que coincidan con /checkout/:id o /checkout/:id/:step, donde :id y :step son parámetros variables que pueden representar diferentes valores en la URL.
 
 Utilizar expresiones regulares: Si necesitas una lógica de coincidencia más avanzada, puedes utilizar expresiones regulares en la propiedad matcher. Por ejemplo:
 
+``` js
     export const config = {
       matcher: [/^\/checkout\/\d+$/, /^\/cart\/\w+$/],
     };
+```
 
 En este caso, el middleware se ejecutará en URLs que coincidan con /checkout/ seguido de uno o más dígitos, o /cart/ seguido de uno o más caracteres alfanuméricos.
 
 Recuerda que puedes combinar estas opciones para crear patrones de coincidencia más complejos según tus necesidades.
+
+## Metodo de Pago
+
+Utilizar las credenciales PayPal fake para demo:
+
+``` credentials
+    Email    => sb-jrmqj26430242@personal.example.com
+    Password => 123456789
+```
 
 ## Dependecias
 

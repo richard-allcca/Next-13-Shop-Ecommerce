@@ -4,8 +4,6 @@ import { Product } from '../models';
 import { IProduct } from './../interface/products';
 
 export const getProductBySlug = async (slug: string): Promise<IProduct | null> => {
-
-
   await db.connect();
 
   const product = await Product.findOne({ slug }).lean();
@@ -33,7 +31,6 @@ export const getAllProductsSlugs = async (): Promise<ProductSlug[]> => {
 };
 
 export const getProductsByTerm = async (term: string): Promise<IProduct[]> => {
-
   db.connect();
 
   const products = await Product.find({
@@ -48,7 +45,6 @@ export const getProductsByTerm = async (term: string): Promise<IProduct[]> => {
 };
 
 export const getAllProducst = async (): Promise<IProduct[]> => {
-
   db.connect();
 
   const products = await Product.find().lean();

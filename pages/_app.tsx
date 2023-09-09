@@ -9,37 +9,43 @@ import { lightTheme } from '../themes';
 
 import { AuthProvider, CartProvider, UiProvider } from '../context';
 
+import { PayPalScriptProvider } from '@paypal/react-paypal-js';
+
 import '../styles/globals.css';
+
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     // <SessionProvider session={session}>
     <SessionProvider >
+      <PayPalScriptProvider options={{ clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || '' }} >
 
-      <SWRConfig
-        value={{
-          // refreshInterval: 300, // Intervalos de tiempo para el refresh
-          fetcher: (resource, init) => fetch(resource, init).then((res) => res.json())
-        }}
-      >
-        <AuthProvider>
+        <SWRConfig
+          value={{
+            // refreshInterval: 300, // Intervalos de tiempo para el refresh
+            fetcher: (resource, init) => fetch(resource, init).then((res) => res.json())
+          }}
+        >
+          <AuthProvider>
 
-          <CartProvider>
+            <CartProvider>
 
-            <UiProvider>
+              <UiProvider>
 
-              <ThemeProvider theme={lightTheme} >
-                <CssBaseline />
-                <Component {...pageProps} />
-              </ThemeProvider>
+                <ThemeProvider theme={lightTheme} >
+                  <CssBaseline />
+                  <Component {...pageProps} />
+                </ThemeProvider>
 
-            </UiProvider>
+              </UiProvider>
 
-          </CartProvider>
+            </CartProvider>
 
-        </AuthProvider>
+          </AuthProvider>
 
-      </SWRConfig>
+        </SWRConfig>
+
+      </PayPalScriptProvider>
 
     </SessionProvider>
   );
