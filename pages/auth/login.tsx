@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { getProviders, getSession, signIn } from 'next-auth/react';
 
-import { AuthContext } from '../../context';
-
 import { AuthLayout } from '../../components/layouts';
 
 import { Link as MuiLink, Box, Grid, Typography, TextField, Button, Chip, Divider } from '@mui/material';
@@ -12,7 +10,6 @@ import { useForm } from 'react-hook-form';
 import { isEmail } from '../../utils';
 import { ErrorOutline } from '@mui/icons-material';
 import { useRouter } from 'next/router';
-import { tesloApi } from '../../api';
 
 import { GetServerSideProps } from 'next';
 
@@ -35,7 +32,6 @@ const Login = () => {
 
   useEffect(() => { // UI provider NextAuth
     getProviders().then(prov => {
-      console.log(prov);
       setProvider(prov);
     });
   }, []);
@@ -189,7 +185,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const { req, query } = ctx;
   const sesion = await getSession({ req });
-
+  console.log('richard',sesion);
+  
   const { p = '/' } = query;
 
   if (sesion) {

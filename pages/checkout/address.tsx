@@ -157,9 +157,9 @@ const AddressPage = () => {
                 error={!!errors.country}
               >
                 {
-                  countries.map(country => (
+                  countries.map((country, index) => (
                     <MenuItem
-                      key={country.code}
+                      key={index}
                       value={country.code}
                     >
                       {country.name}

@@ -1,9 +1,23 @@
-import NextAuth from 'next-auth';
+import NextAuth, { AuthOptions, DefaultSession, Session } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import GithubProvider from 'next-auth/providers/github';
 import { checkUseremailPassword, oAuthToDbUser } from './../../../database/dbUsers';
 
-export const authOptions = {
+// export interface SessionExtension extends DefaultSession {
+//   accessToken: string;
+//   apiToken: string;
+//   refreshToken: string;
+// }
+
+declare module 'next-auth' {
+  interface DefaultSession {
+    accessToken: string;
+    // apiToken: string;
+    // refreshToken: string;
+  }
+}
+
+export const authOptions: AuthOptions = {
   // Configure one or more authentication providers
   providers: [
 
@@ -13,10 +27,8 @@ export const authOptions = {
         email: { label: 'Correo', type: 'email', placeholder: 'correo@google.com' },
         password: { label: 'Contraseña', type: 'password', placeholder: 'Contraseña' },
       },
-      async authorize(credentials) {
+      async authorize(credentials): Promise<any> {
         // console.log({ credentials });
-        //  TODO - validar con base de datos
-
         return await checkUseremailPassword(credentials!.email, credentials!.password);
       }
     }),
@@ -30,15 +42,15 @@ export const authOptions = {
 
   ],
 
-  // Custom pages
-  pages : {
+  // Custom pages to login and register
+  pages: {
     signIn: '/auth/login',
     newUser: 'auth/register'
   },
 
   // Callbacks
   jwt: {
-    // secret: process.env.JWT_SECRET_SEED, // DEPRECATED
+    // secret: process.env.JWT_SECRET_SEED, // STUB - DEPRECATED
   },
 
   // Expiration sesion (opcional me funciono bien sin esto)
@@ -57,7 +69,7 @@ export const authOptions = {
 
         switch (account.type) {
           case 'oauth':
-            token.user = await oAuthToDbUser(user.email, user.name);
+            token.user = await oAuthToDbUser(user.email!, user.name!);
             break;
 
           case 'credentials':
@@ -69,8 +81,7 @@ export const authOptions = {
     },
     async session({ session, token, user }) {
       // Send properties to the client, like an access_token from a provider.
-
-      session.accessToken = token.accessToken;
+      session.accessToken = token.accessToken as string;
       session.user = token.user as any;
 
       return session;

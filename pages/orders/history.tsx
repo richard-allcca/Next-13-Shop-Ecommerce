@@ -9,6 +9,10 @@ import { getSession } from 'next-auth/react';
 import { dbOrders } from '../../database';
 import { IOrder } from '../../interface';
 
+interface Props {
+  orders: IOrder[]
+}
+
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID', width: 100 },
   { field: 'fullname', headerName: 'Nombre Completo', width: 300 },
@@ -45,10 +49,6 @@ const columns: GridColDef[] = [
 //   { id: 1, paid: true, fullname: 'Richard Allcca1' },
 //   { id: 2, paid: false, fullname: 'Amaia Allcca' },
 // ];
-
-interface Props {
-  orders: IOrder[]
-}
 
 const history: FC<Props> = ({ orders }) => {
 

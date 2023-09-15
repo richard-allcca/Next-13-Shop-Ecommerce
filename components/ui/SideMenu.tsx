@@ -17,6 +17,7 @@ import {
   AdminPanelSettings,
   CategoryOutlined,
   ConfirmationNumberOutlined,
+  DashboardOutlined,
   EscalatorWarningOutlined,
   FemaleOutlined,
   LoginOutlined,
@@ -41,9 +42,10 @@ const listCategoriesMenu = [
 ];
 
 const listAdminPanel = [
+  { text: 'Dashboard', icon: <DashboardOutlined />, path: '/admin' },
   { text: 'Productos', icon: <CategoryOutlined /> },
-  { text: 'Ordenes', icon: <ConfirmationNumberOutlined /> },
-  { text: 'Usuarios', icon: <AdminPanelSettings /> },
+  { text: 'Ordenes', icon: <ConfirmationNumberOutlined />, path: '/admin/orders' },
+  { text: 'Usuarios', icon: <AdminPanelSettings />, path: '/admin/users' },
 ];
 
 const listBoottomMenu = [

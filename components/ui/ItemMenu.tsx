@@ -16,7 +16,11 @@ export const ItemMenu: FC<Props> = ({ lista }) => {
   return lista.map((item, index) => {
     if (item.path !== undefined) {
       return (
-        <Link href={item.path} key={index} onClick={toggleSideMenu} >
+        <Link
+          href={item.path}
+          key={index} onClick={toggleSideMenu}
+          style={{ textDecoration: 'none' }}
+        >
           <MuiLink component={'span'} >
             <ListItemButton >
               <ListItemIcon>
