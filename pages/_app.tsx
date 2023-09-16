@@ -5,7 +5,7 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 
 import { SWRConfig } from 'swr';
 
-import { lightTheme } from '../themes';
+import { darkTheme, lightTheme } from '../themes';
 
 import { AuthProvider, CartProvider, UiProvider } from '../context';
 
@@ -13,8 +13,27 @@ import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 
 import '../styles/globals.css';
 
+// ============= Context to Theme
+import { createContext, useState } from 'react';
+
+type ThemeContextType = {
+  themeDark: boolean;
+  toggleTheme: () => void;
+};
+
+export const ThemeContext = createContext<ThemeContextType>({
+  themeDark: false,
+  toggleTheme: () => {},
+});
+// ===================
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const [themeDark, setThemeDark] = useState(false);
+
+  const toggleTheme = () => {
+    setThemeDark(!themeDark);
+  };
+
   return (
     // <SessionProvider session={session}>
     <SessionProvider >
@@ -26,22 +45,26 @@ function MyApp({ Component, pageProps }: AppProps) {
             fetcher: (resource, init) => fetch(resource, init).then((res) => res.json())
           }}
         >
-          <AuthProvider>
+          <ThemeContext.Provider value={{ themeDark, toggleTheme }} >
 
-            <CartProvider>
+            <AuthProvider>
 
-              <UiProvider>
+              <CartProvider>
 
-                <ThemeProvider theme={lightTheme} >
-                  <CssBaseline />
-                  <Component {...pageProps} />
-                </ThemeProvider>
+                <UiProvider>
 
-              </UiProvider>
+                  <ThemeProvider theme={themeDark ? darkTheme : lightTheme} >
+                    <CssBaseline />
+                    <Component {...pageProps} />
+                  </ThemeProvider>
 
-            </CartProvider>
+                </UiProvider>
 
-          </AuthProvider>
+              </CartProvider>
+
+            </AuthProvider>
+
+          </ThemeContext.Provider>
 
         </SWRConfig>
 

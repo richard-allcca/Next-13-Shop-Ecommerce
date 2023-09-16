@@ -43,7 +43,7 @@ const listCategoriesMenu = [
 
 const listAdminPanel = [
   { text: 'Dashboard', icon: <DashboardOutlined />, path: '/admin' },
-  { text: 'Productos', icon: <CategoryOutlined /> },
+  { text: 'Productos', icon: <CategoryOutlined />, path: '/admin/products' },
   { text: 'Ordenes', icon: <ConfirmationNumberOutlined />, path: '/admin/orders' },
   { text: 'Usuarios', icon: <AdminPanelSettings />, path: '/admin/users' },
 ];

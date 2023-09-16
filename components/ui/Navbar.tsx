@@ -11,13 +11,16 @@ import {
   InputAdornment,
 } from '@mui/material';
 import Link from 'next/link';
-import { ClearOutlined, SearchOutlined, ShoppingCartOutlined } from '@mui/icons-material';
+import {
+  ClearOutlined, NightlightOutlined, SearchOutlined, ShoppingCartOutlined, WbSunnyOutlined
+} from '@mui/icons-material';
 import { ActiveLink } from './ActiveLink';
 import { useContext, useState } from 'react';
 import { CartContext, UiContext } from '../../context';
 import { useRouter } from 'next/router';
+import { ThemeContext } from './../../pages/_app';
 
-const menuItems = [
+const genderItems = [
   {
     label: 'Hombres',
     path: '/category/men',
@@ -36,6 +39,7 @@ const menuItems = [
 export const Navbar = () => {
   const { toggleSideMenu } = useContext(UiContext);
   const { numberOfItems } = useContext(CartContext);
+  const { toggleTheme, themeDark } = useContext(ThemeContext);
 
   const router = useRouter();
 
@@ -49,22 +53,36 @@ export const Navbar = () => {
 
   const countItem = numberOfItems > 9 ? '+9' : numberOfItems;
 
+  const handleTheme = () => {
+    return themeDark
+      ? (
+        <WbSunnyOutlined />
+      )
+      : (
+        <NightlightOutlined />
+      );
+  };
+
   return (
     <AppBar>
       <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }} className="richard" >
+
+        {/* Logo shop */}
         <Link href="/" >
           <MuiLink style={{ display: 'flex', alignItems: 'center' }} underline="always" component={'span'}>
             <Typography variant="h6">Teslo |</Typography>
-            <Typography sx={{ ml: 0.5 }}>Shop</Typography>
+            <Typography variant="h6" sx={{ ml: 0.5 }}>Shop</Typography>
           </MuiLink>
         </Link>
 
+        {/* Gender buttons */}
         <Box sx={{ display: isSearchVisible ? 'none' : { xs: 'none', md: 'block' } }}>
-          {menuItems.map((item, index) => {
+          {genderItems.map((item, index) => {
             return <ActiveLink key={index} path={item.path} label={`${item.label}`} />;
           })}
         </Box>
 
+        {/* Input or Search */}
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }} >
           {isSearchVisible ? (
             <Input
@@ -94,10 +112,12 @@ export const Navbar = () => {
             </IconButton>
           )}
 
+          {/* Search */}
           <IconButton sx={{ display: { sm: 'none' } }} onClick={toggleSideMenu}>
             <SearchOutlined />
           </IconButton>
 
+          {/* Cart Icon */}
           <Link href="/cart">
             <MuiLink underline="always" component={'span'}>
               <IconButton>
@@ -108,8 +128,14 @@ export const Navbar = () => {
             </MuiLink>
           </Link>
 
-          <Button onClick={toggleSideMenu}>
-            <Typography>Menu</Typography>
+          {/* Theme */}
+          <Button onClick={toggleTheme}>
+            {handleTheme()}
+          </Button>
+
+          {/* Menú */}
+          <Button onClick={toggleSideMenu} sx={{ marginLeft: '4px' }} >
+            <Typography color={'black'} >Menu</Typography>
           </Button>
         </Box>
       </Toolbar>

@@ -20,7 +20,7 @@ export const ActiveLink: FC<Props> = ({ label, path }) => {
   const { asPath } = useRouter();
 
   return (
-    <Link href={`${path}`} >
+    <Link href={`${path}`} style={{ marginRight: '4px' }} >
       {/* <Button style={asPath === path? active : undefined} >{label}</Button> */}
       <Button color={`${asPath === path ? 'primary' : 'info'}`} >{label}</Button>
     </Link>

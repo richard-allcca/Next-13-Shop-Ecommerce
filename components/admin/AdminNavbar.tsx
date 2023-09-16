@@ -8,15 +8,28 @@ import {
 } from '@mui/material';
 import Link from 'next/link';
 import { UiContext } from '../../context';
+import { NightlightOutlined, WbSunnyOutlined } from '@mui/icons-material';
+import { ThemeContext } from '../../pages/_app';
 
 
 export const AdminNavbar = () => {
   const { toggleSideMenu } = useContext(UiContext);
+  const { toggleTheme, themeDark } = useContext(ThemeContext);
+
+  const handleTheme = () => {
+    return themeDark
+      ? (
+        <WbSunnyOutlined />
+      )
+      : (
+        <NightlightOutlined />
+      );
+  };
 
   return (
     <AppBar>
       <Toolbar
-        sx={{ display: 'flex', justifyContent: 'space-between' }} className="richard" 
+        sx={{ display: 'flex', justifyContent: 'space-between' }} className="richard"
       >
 
         <Link href="/" >
@@ -26,8 +39,14 @@ export const AdminNavbar = () => {
           </MuiLink>
         </Link>
 
+        {/* Theme */}
+        <Button onClick={toggleTheme}>
+          {handleTheme()}
+        </Button>
+
+        {/* Menú */}
         <Button onClick={toggleSideMenu}>
-          <Typography>Menu</Typography>
+          <Typography color={'black'} >Menu</Typography>
         </Button>
 
       </Toolbar>
