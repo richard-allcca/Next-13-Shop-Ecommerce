@@ -186,7 +186,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { req, query } = ctx;
   const sesion = await getSession({ req });
   console.log('richard',sesion);
-  
+
   const { p = '/' } = query;
 
   if (sesion) {

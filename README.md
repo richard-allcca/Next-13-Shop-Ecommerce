@@ -2,6 +2,8 @@
 
 First, run the development server:
 
+Version **Node 16.17.0**
+
 ```bash
 yarn dev
 ```
