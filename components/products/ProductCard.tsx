@@ -12,11 +12,20 @@ export const ProductCard: FC<Props> = ({ product }) => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   const productImage = useMemo(() => {
+    const [firstImage, secondImage] = product.images;
+    const HOST_NAME = process.env.NEXT_PUBLIC_HOST_NAME || '';
 
-    return isHovered
-      ? `/products/${product.images[1]}`
-      : `/products/${product.images[0]}`;
+    const urlImg1 = firstImage && firstImage.startsWith('http')
+      ? firstImage
+      : `${HOST_NAME}/products/${firstImage}`;
+
+    const urlImg2 = secondImage && secondImage.startsWith('http')
+      ? secondImage
+      : `${HOST_NAME}/products/${secondImage}`;
+
+    return isHovered ? urlImg1 : urlImg2;
   }, [isHovered, product.images]);
+
 
   return (
     <Grid

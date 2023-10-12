@@ -4,11 +4,14 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import formidable from 'formidable';
 import fs from 'fs';
 
+import { v2 as cloudinary } from 'cloudinary';
+cloudinary.config( process.env.CLOUDINARY_URL || '' );
+
 type Data = {
-  message: string;
+  message: string
 };
 
-export const config = {
+export const config = { // Explicación al final
   api: {
     bodyParser: false
   }
@@ -25,14 +28,19 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
   }
 }
 
-const saveFile = async (file: formidable.File) => {
-  const data = fs.readFileSync( file.filepath);
-  fs.writeFileSync(`./public/${file.originalFilename}`, data);
-  fs.unlinkSync(file.filepath); // delete temporary file
-  return;
+const saveFile = async (file: formidable.File): Promise<string> => {
+  //  STUB - save into public
+  // const data = fs.readFileSync( file.filepath);
+  // fs.writeFileSync(`./public/${file.originalFilename}`, data);
+  // fs.unlinkSync(file.filepath); // delete temporary file
+  // return;
+
+  const data = await cloudinary.uploader.upload(file.filepath);
+
+  return data.secure_url;
 };
 
-const parseFiles = async (req: NextApiRequest) => {
+const parseFiles = async (req: NextApiRequest): Promise<string> => {
 
   return new Promise((resolve, reject) => {
 
@@ -44,18 +52,18 @@ const parseFiles = async (req: NextApiRequest) => {
 
       const file = Array.isArray(files.file) ? files.file[0] : files.file;
 
-      await saveFile( file as formidable.File );
-      resolve(true);
+      const imgPathCloudinary = await saveFile( file as formidable.File );
 
+      resolve(imgPathCloudinary);
     });
   });
 };
 
 const uploadFile = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 
-  await parseFiles(req);
+  const imgeUrl = await parseFiles(req);
 
-  return res.status(200).json({ message: 'Imagen subida' });
+  return res.status(200).json({ message: imgeUrl });
 };
 
 /* NOTE - config

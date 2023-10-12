@@ -138,7 +138,7 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
 
   const onFilesSelected = async (e: ChangeEvent<HTMLInputElement>) => {
     const { target } = e;
-    if(!target.files || target.files.length === 0){
+    if (!target.files || target.files.length === 0) {
       return;
     }
 
@@ -147,12 +147,27 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
       for (const file of target.files) { // downlevelIteration - no se puede iterar un target
         const formData = new FormData();
         formData.append('file', file);
-        const { data } = await tesloApi.post<{ message: string }>('/admin/upload');
-        console.log(data);
+        const { data } = await tesloApi.post<{ message: string; }>('/admin/upload', formData);
+        setValue('images', [...getValues('images'), data.message], { shouldValidate: true });
       }
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const onDeleteImage = (img: string) => {
+    const newImages = getValues('images').filter(el => {
+      return el !== img;
+    });
+
+    setValue('images', newImages, { shouldValidate: true });
+  };
+
+  const getUrlImg = (img: string) => {
+    return img.startsWith('http')
+      ? img
+      // : `${process.env.NEXT_PUBLIC_HOST_NAME}/products/${img}`;
+      : `${process.env.NEXT_PUBLIC_HOST_NAME}/products/${img}`;
   };
 
   return (
@@ -369,21 +384,36 @@ const ProductAdminPage: FC<Props> = ({ product }) => {
                 onChange={onFilesSelected}
               />
 
-              <Chip label="Es necesario al 2 imagenes" color="error" variant="outlined" />
+              <Chip
+                label="Es necesario al 2 imagenes"
+                color="error"
+                variant="outlined"
+                sx={{ display: getValues('images').length < 2 ? 'flex' : 'none' }}
+              />
 
               <Grid container spacing={2}>
-                {product.images.map((img) => (
-                  <Grid item xs={4} sm={3} key={img}>
-                    <Card>
-                      <CardMedia component="img" className="fadeIn" image={`/products/${img}`} alt={img} />
-                      <CardActions>
-                        <Button fullWidth color="error">
-                          Borrar
-                        </Button>
-                      </CardActions>
-                    </Card>
-                  </Grid>
-                ))}
+                {
+                  getValues('images').map((img) => (
+                    <Grid item xs={4} sm={3} key={img}>
+                      <Card>
+                        <CardMedia
+                          component="img"
+                          className="fadeIn"
+                          image={getUrlImg(img)}
+                          alt={img} />
+                        <CardActions>
+                          <Button
+                            fullWidth
+                            color="error"
+                            onClick={() => onDeleteImage(img)}
+                          >
+                            Borrar
+                          </Button>
+                        </CardActions>
+                      </Card>
+                    </Grid>
+                  ))
+                }
               </Grid>
             </Box>
           </Grid>
@@ -406,7 +436,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     // Crear nuevo producto
     const tempProduct = JSON.parse(JSON.stringify(new Product()));
     delete tempProduct._id;
-    tempProduct.images = ['img1.jpg', 'img2.jpg2'];
+    tempProduct.images = ['img1.jpg', 'img2.jpg'];
     product = tempProduct;
   } else {
     product = await getProductBySlug(slug.toString());

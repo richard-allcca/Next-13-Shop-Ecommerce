@@ -21,6 +21,13 @@ export const CartList: FC<Props> = ({ editable = false, products }) => {
   };
 
   const productsToShow = products ? products : cart;
+
+  const getUrlImage = (image: string) => {
+    return image.startsWith('http')
+      ? image :
+      `${process.env.NEXT_PUBLIC_HOST_NAME}/products/${image}`;
+  };
+
   return (
     <>
       {
@@ -32,7 +39,8 @@ export const CartList: FC<Props> = ({ editable = false, products }) => {
                 <MuiLink component={'div'} >
                   <CardActionArea>
                     <CardMedia
-                      image={`/products/${product.image}`}
+                      // image={ product.image.startsWith('http') ? product.image : `/products/${product.image}`}
+                      image={getUrlImage(product.image)}
                       component="img"
                       sx={{ borderRadius: '5px' }}
                     />

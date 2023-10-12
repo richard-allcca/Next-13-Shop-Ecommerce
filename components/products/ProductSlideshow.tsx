@@ -10,6 +10,7 @@ interface Props {
 }
 
 export const ProductSlideshow: FC<Props> = ({ images }) => {
+
   return (
     <Slide
       easing="ease"
@@ -18,7 +19,7 @@ export const ProductSlideshow: FC<Props> = ({ images }) => {
     >
       {
         images.map((image,index) => {
-          const url = `/products/${image}`;
+          const url = image.startsWith('http') ? image : `${process.env.NEXT_PUBLIC_HOST_NAME}/products/${image}`;
           return (
             <div className={Style.eachSlide } key={index}>
               <div style={{

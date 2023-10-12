@@ -78,7 +78,7 @@ const Order: FC<Props> = ({ order }) => {
         isPaid
           ? (
             <Chip
-              sx={{ mt: 2 }}
+              sx={{ mt: 2, mb: 2  }}
               label="Orden Pagada"
               variant="outlined"
               color="success"
@@ -87,7 +87,7 @@ const Order: FC<Props> = ({ order }) => {
           )
           : (
             <Chip
-              sx={{ mt: 2 }}
+              sx={{ mt: 2, mb: 2 }}
               label="Pendiente de pago"
               variant="outlined"
               color="error"

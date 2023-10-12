@@ -115,6 +115,7 @@ Utilizar las credenciales PayPal fake para demo:
   yarn add react-hook-form
   yarn add axios
   yarn add next-auth
+  yarn add formidable@v2
 ```
 
 ## Enlaces

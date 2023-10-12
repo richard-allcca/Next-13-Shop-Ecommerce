@@ -12,12 +12,15 @@ const columns: GridColDef[] = [
     field: 'img',
     headerName: 'Foto',
     renderCell: ({ row }: GridRenderCellParams) => {
+      const getUrl = row.img.startsWith('http') ? row.img : `${process.env.NEXT_PUBLIC_HOST_NAME}/products/${row.img}`;
+      // console.log(row.img.startsWith('http'));
+
       return (
         <a href={`/product/${row.slug}`} target="_blank" rel="noreferrer" >
           <CardMedia
             component={'img'}
             className="fadein"
-            image={`/products/${row.img}`}
+            image={getUrl}
           />
         </a>
       );

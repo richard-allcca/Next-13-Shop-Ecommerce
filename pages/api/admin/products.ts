@@ -4,6 +4,9 @@ import { db } from '../../../database';
 import { Product } from '../../../models';
 import { isValidObjectId } from 'mongoose';
 
+import { v2 as cloudinary } from 'cloudinary';
+cloudinary.config( process.env.CLOUDINARY_URL || '' );
+
 type Data =
   | { name: string; }
   | { message: string; }
@@ -69,6 +72,14 @@ const updateProducts = async (req: NextApiRequest, res: NextApiResponse<Data>) =
     }
 
     // TODO - Eliminar imagenes en cloudinary
+    product.images.forEach(async (img) => {
+      if(!images.includes(img)){
+        // extrae la parte final de la url
+        const urlExtractValues = img.substring(img.lastIndexOf('/') + 1).split('.');
+        const [ fileId, extension ] = urlExtractValues;
+        await cloudinary.uploader.destroy(fileId);
+      }
+    });
 
     await product?.updateOne(req.body);
     await db.disconnect();
