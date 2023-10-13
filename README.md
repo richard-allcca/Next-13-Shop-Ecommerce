@@ -136,4 +136,6 @@ Utilizar las credenciales PayPal fake para demo:
 
 ## Vista previa
 
+[Desplegado en Vercel](https://next-shop-ecommerce.vercel.app/)
+
 ![Home](assets/home.png)
