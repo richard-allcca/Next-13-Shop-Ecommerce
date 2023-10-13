@@ -44,6 +44,8 @@ mongo/
 
 # variables de entorno
 .env
+.env.development
+.env.production
 
 # settings theems vs code
 settings.json
