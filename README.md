@@ -8,9 +8,9 @@ Version **Node 16.17.0**
 yarn dev
 ```
 
-## Configuararciones iniciales
+## Configuraciones iniciales
 
-- Reconstruir los modulos con `npm i`
+- Reconstruir los módulos con `npm i`
 
     ***Importante agregar `mongo/` al gitignore***
 
@@ -22,13 +22,13 @@ yarn dev
   docker compose up -d
 ```
 
-### Cadena de conexion con MongoDB local (contenedor)
+### Cadena de conexión con MongoDB local (contenedor)
 
 ``` bash
   mongodb://localhost:27017/entriesdb
 ```
 
-### Llenar la DDDBB con datos de prueba usando
+### Llenar la DDBB con datos de prueba usando
 
 - usa este comando solo una vez o elimina el file /page/api/seed
 
@@ -47,9 +47,9 @@ yarn dev
     />
 ```
 
-- Configuarar variables de entorno
+- Configurar variables de entorno
 
-- MongoDB URL Local, para conexion con la base de datos.
+- MongoDB URL Local, para conexión con la base de datos.
 
 ``` bash
   mongodb://localhost:27017/entriesdb
@@ -91,7 +91,7 @@ En este caso, el middleware se ejecutará en URLs que coincidan con /checkout/ s
 
 Recuerda que puedes combinar estas opciones para crear patrones de coincidencia más complejos según tus necesidades.
 
-## Metodo de Pago
+## Método de Pago
 
 Utilizar las credenciales PayPal fake para demo:
 
@@ -100,7 +100,7 @@ Utilizar las credenciales PayPal fake para demo:
     Password => 123456789
 ```
 
-## Dependecias
+## Dependencias
 
 ``` bash
   yarn add @mui/material @emotion/react @emotion/styled
@@ -123,9 +123,9 @@ Utilizar las credenciales PayPal fake para demo:
 - [Material UI](https://mui.com/)
 - [Material ui Icons](https://mui.com/material-ui/material-icons/?query=moon)
 - [Drag & Drop react-beautiful-dnd](https://www.npmjs.com/package/react-beautiful-dnd)
-- [Codigos de respuesta http](https://developer.mozilla.org/es/docs/Web/HTTP/Status)
+- [Códigos de respuesta http](https://developer.mozilla.org/es/docs/Web/HTTP/Status)
 - [Middleware Next](https://nextjs.org/docs/advanced-features/middleware)
-- [Guia de migración Middleware Next](https://nextjs.org/docs/messages/middleware-upgrade-guide#breaking-changes)
+- [Guía de migración Middleware Next](https://nextjs.org/docs/messages/middleware-upgrade-guide#breaking-changes)
 - [Snackbar](https://mui.com/material-ui/react-snackbar/)
 - [notistack - con Provider](https://github.com/iamhosseindhv/notistack)
 - [date-fns](https://date-fns.org/)

@@ -6,7 +6,7 @@ export async function authMiddleware(req: NextRequest) {
 
   if (previousPage.startsWith('/checkout')) {
     console.log('entro');
-        
+
     const token = req.cookies.get('token')?.value;
 
     if (!token) {

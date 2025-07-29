@@ -15,7 +15,7 @@
 # production
 /build
 
-# imagenes
+# imágenes
 /public/products/*.jpg
 
 # misc
@@ -33,7 +33,7 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
-# vercel
+# Vercel
 .vercel
 
 # typescript
@@ -47,5 +47,5 @@ mongo/
 .env.development
 .env.production
 
-# settings theems vs code
+# settings themes vs code
 settings.json
