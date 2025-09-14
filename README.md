@@ -100,22 +100,22 @@ Utilizar las credenciales PayPal fake para demo:
     Password => 123456789
 ```
 
-## Dependencias
+## Dependencias Importantes
 
 ``` bash
-  yarn add @mui/material @emotion/react @emotion/styled
+  yarn add @mui/material @emotion/react @emotion/styled # Material UI, componentes y estilos
   yarn add @mui/icons-material
   yarn add uuid
-  yarn add notistack
+  yarn add notistack # Para notificaciones tipo toast
   yarn add date-fns
-  yarn add @mui/x-data-grid
+  yarn add @mui/x-data-grid # Para tablas de datos
   yarn add js-cookies
   yarn add bcryptjs
   yarn add jsonwebtoken
   yarn add react-hook-form
   yarn add axios
   yarn add next-auth
-  yarn add formidable@v2
+  yarn add formidable@v2 # Te permite usar promesas y async/await en lugar de callbacks en el manejo de formularios con archivos.
 ```
 
 ## Enlaces
